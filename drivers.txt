@@ -1,0 +1,12 @@
+11
+Vettel;MASTER;
+Webber;EXPERT;
+Alonso;MASTER;
+Massa;INTERMEDIATE;
+Button;NOVICE;
+Perez;EXPERT;
+Raikkonen;PRO;
+Grosje;INTERMEDIATE;
+Rosberg;PRO;
+Hamilton;EXPERT;
+Hulkenberg;MONKEY;
