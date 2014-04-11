@@ -258,7 +258,7 @@ public class Board extends JPanel implements ActionListener{
         		collisionString+=" "+bolid.getBolidNumber()+". "+bolid.getName();
                 bolids.remove(bolid);
             }
-        	//TODO Zbli¿enie na kolizjê
+        	//TODO Zbliï¿½enie na kolizjï¿½
         	JOptionPane.showMessageDialog(this.getParent(), "Collision on track:"+collisionString+"!");
         }
 

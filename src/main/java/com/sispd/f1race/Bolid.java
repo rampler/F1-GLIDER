@@ -567,7 +567,7 @@ public class Bolid {
 
 
 
-        URL pathSerialized = getClass().getResource("/bolid"+ color +".png");
+        URL pathSerialized = getClass().getResource("/bolid"+ color +".png");         //TODO jednorazowe czytanie
         BufferedImage bufferedImage = ImageIO.read(new File(pathSerialized.getFile()));
         double theta = velocity.heading() + Math.PI/2;
 

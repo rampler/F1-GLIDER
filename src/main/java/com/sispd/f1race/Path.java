@@ -66,7 +66,7 @@ public class Path implements Serializable {
         ((Graphics2D) g).setTransform(customTransform);
         g.drawPolygon(polygon);
 
-        URL pathSerialized = getClass().getResource("/track.bmp");
+        URL pathSerialized = getClass().getResource("/track.jpg");
         BufferedImage bufferedImage = ImageIO.read(new File(pathSerialized.getFile()));
         Rectangle anchorRect = new Rectangle(0, 0, 8, 8);
         TexturePaint paint = new TexturePaint(bufferedImage, anchorRect);

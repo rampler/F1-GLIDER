@@ -64,7 +64,6 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 		parent = container;
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		container.setSize(new Dimension(1024, 768));
-		
 		//Timers
 		timer = new Timer((int)(timerDelay/simulationSpeed), this);
 		timer.stop();
