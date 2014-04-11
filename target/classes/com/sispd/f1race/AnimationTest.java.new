@@ -1,0 +1,326 @@
+package com.sispd.f1race;
+
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+
+public class AnimationTest extends JPanel implements ActionListener {
+    private static final int WIDE = 640;
+    private static final int HIGH = 480;
+
+    private double scale;
+
+    private final Timer timer = new Timer(40, this);
+    private static BufferedImage background;
+    private static TransformingCanvas canvas;
+
+    List<Bolid> bolids = new ArrayList<Bolid>(25);
+
+    Path path;
+    ConsoleFrame consoleFrame;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new AnimationTest().create();
+            }
+        });
+    }
+
+    private void create() {
+        deserializePath();
+        printPathStats();
+        addBolids();
+
+        consoleFrame = new ConsoleFrame(bolids);
+          consoleFrame.setVisible(true);
+
+        //  JScrollPane pane = new JScrollPane(this, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        JFrame frame = new JFrame("Animation test");
+        canvas = new TransformingCanvas();
+        TranslateHandler translater = new TranslateHandler();
+        canvas.addMouseListener(translater);
+        canvas.addMouseMotionListener(translater);
+        canvas.addMouseWheelListener(new ScaleHandler());
+        frame.setLayout(new BorderLayout());
+        frame.getContentPane().add(canvas);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        JFrame f = new JFrame("AnimationTest");
+//        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//       // f.add(this);
+//        f.add(pane);
+//        f.pack();
+//        f.setLocationRelativeTo(null);
+//        f.setVisible(true);
+//        f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+
+        timer.start();
+    }
+
+    private void printPathStats() {
+        System.out.println("Path length: " + path.calculateLength() / 10000 + " km");
+        System.out.println("Breaking max: " + path.breakingMax + " breaking min: " + path.breakingMin);
+    }
+
+    private void deserializePath() {
+        try {
+            URL pathSerialized = getClass().getResource("/path.serialized");
+            FileInputStream fileIn = new FileInputStream(pathSerialized.getFile());
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            path = (Path) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+        } catch (ClassNotFoundException c) {
+            System.out.println("Path class not found");
+            c.printStackTrace();
+        }
+    }
+
+    boolean debugMode = false;
+    int bolidSize = 2;
+
+    private void addBolids() {
+
+        Bolid bolid1 = new Bolid(8500, 8170, bolidSize, 29.5, 0.25, 0.09, 0.05, Color.BLUE, debugMode, bolids, "custom1");
+        Bolid bolid2 = new Bolid(8600, 8180, bolidSize, 28.5, 0.25, 0.05, 0.05, Color.RED, debugMode, bolids, "custom2");
+        Bolid bolid3 = new Bolid(8700, 8190, bolidSize, 38.5, 0.28, 0.07, 0.05, Color.GREEN, debugMode, bolids, "custom3");
+        Bolid bolid4 = new Bolid(8800, 8200, bolidSize, 36.5, 0.29, 0.10, 0.05, Color.CYAN, debugMode, bolids, "custom4");
+
+//        bolids.add(bolid1);
+//        bolids.add(bolid2);
+//        bolids.add(bolid3);
+//        bolids.add(bolid4);
+    }
+
+    public AnimationTest() {
+        super(true);
+        this.setOpaque(false);
+        this.setPreferredSize(new Dimension(WIDE, HIGH));
+//        this.addMouseListener(new Mouse());
+        this.addComponentListener(new ComponentHandler());
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g.drawImage(background, 0, 0, this);
+
+        int i = 1;
+        for (Bolid bolid : bolids) {
+            bolid.display(g, scale);
+
+            String s = bolid.toString();
+            int x = (int) (bolid.location.getX() * scale) - 15;
+            int y = (int) (bolid.location.getY() * scale) - 4;
+
+            g.drawString(s, x, y);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        for (Bolid bolid : bolids) {
+            bolid.update();
+            bolid.follow(path);
+        }
+
+        consoleFrame.updateBolidsLists();
+        consoleFrame.updateFields();
+
+        this.repaint();
+    }
+
+    private class ComponentHandler extends ComponentAdapter {
+
+        private final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        private final GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+        private double scale1;
+
+        @Override
+        public void componentResized(ComponentEvent e) {
+            super.componentResized(e);
+            int w = getWidth();
+            int h = getHeight();
+
+            background = gc.createCompatibleImage(w, h, Transparency.BITMASK);
+            Graphics2D g = background.createGraphics();
+            g.clearRect(0, 0, w, h);
+
+            g.setColor(new Color(0, 206, 0));
+            g.fillRect(0, 0, w, h);
+
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            scale1 = Math.min((double) w / 13300, (double) h / 8500);
+
+            path.display(g, 100, scale1);
+            g.dispose();
+
+        }
+    }
+
+
+    private class TransformingCanvas extends JComponent {
+        private double translateX;
+        private double translateY;
+        private double scale;
+
+        private double scale1;
+
+        private final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        private final GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+
+        TransformingCanvas() {
+            translateX = 0;
+            translateY = 0;
+            scale = 1;
+            setOpaque(true);
+            setDoubleBuffered(true);
+        }
+
+        @Override
+        public void paint(Graphics g) {
+            int w = getWidth();
+            int h = getHeight();
+            //   background = gc.createCompatibleImage(w, h, Transparency.BITMASK);
+            //g = background.createGraphics();
+
+            AffineTransform tx = new AffineTransform();
+            tx.translate(translateX, translateY);
+            tx.scale(scale, scale);
+            Graphics2D ourGraphics = (Graphics2D) g;
+
+            ourGraphics.clearRect(0, 0, w, h);
+
+            ourGraphics.setColor(new Color(0, 157, 0));
+            ourGraphics.fillRect(0, 0, w, h);
+            scale1 = Math.min((double) w / 13300, (double) h / 8500);
+
+            ourGraphics.setColor(new Color(189, 189, 189));
+
+            Polygon polygon = new Polygon();
+
+
+            ourGraphics.setTransform(tx);
+            ourGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            ourGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+            for (int i = 0; i < path.getPoints().size(); i += 100) {
+                PVector point = path.getPoints().get(i);
+
+                int scaledX = (int) (point.getX() * scale1);
+                int scaledY = (int) (point.getY() * scale1);
+
+                polygon.addPoint(scaledX, scaledY);
+            }
+
+            int lineWidth = (int) ((150 * scale1) * 2);
+            ourGraphics.setStroke(new BasicStroke(lineWidth));
+
+            ourGraphics.drawPolygon(polygon);
+            //ourGraphics.dispose();
+
+
+            // g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+            //super.paint(g);
+
+        }
+    }
+
+    private class TranslateHandler implements MouseListener,
+            MouseMotionListener {
+        private int lastOffsetX;
+        private int lastOffsetY;
+
+        public void mousePressed(MouseEvent e) {
+            // capture starting point
+            lastOffsetX = e.getX();
+            lastOffsetY = e.getY();
+        }
+
+        public void mouseDragged(MouseEvent e) {
+
+            // new x and y are defined by current mouse location subtracted
+            // by previously processed mouse location
+            int newX = e.getX() - lastOffsetX;
+            int newY = e.getY() - lastOffsetY;
+
+            // increment last offset to last processed by drag event.
+            lastOffsetX += newX;
+            lastOffsetY += newY;
+
+            // update the canvas locations
+            canvas.translateX += newX;
+            canvas.translateY += newY;
+
+            // schedule a repaint.
+            canvas.repaint();
+        }
+
+        public void mouseClicked(MouseEvent e) {
+
+            Random random = new Random();
+
+            double maxSpeed = random.nextDouble() * 15 + 20;
+            double acceleration = random.nextDouble() * 0.15 + 0.2;
+            double turnForce = random.nextDouble() * 0.15 + 0.05;
+
+            Color color = new Color(random.nextInt(120), random.nextInt(120), random.nextInt(120));
+
+            Bolid bolid = new Bolid(8500, 8170, bolidSize, maxSpeed, acceleration, turnForce, 0.05, color, debugMode, bolids, "bolid" + bolids.size());
+            bolids.add(bolid);
+        }
+
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        public void mouseExited(MouseEvent e) {
+        }
+
+        public void mouseMoved(MouseEvent e) {
+        }
+
+        public void mouseReleased(MouseEvent e) {
+        }
+    }
+
+    private static class ScaleHandler implements MouseWheelListener {
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            if (e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
+
+                // make it a reasonable amount of zoom
+                // .1 gives a nice slow transition
+                canvas.scale += (.1 * e.getWheelRotation());
+                // don't cross negative threshold.
+                // also, setting scale to 0 has bad effects
+                canvas.scale = Math.max(0.00001, canvas.scale);
+                canvas.repaint();
+            }
+        }
+    }
+}

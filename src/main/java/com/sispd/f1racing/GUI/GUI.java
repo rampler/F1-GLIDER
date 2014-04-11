@@ -1,37 +1,23 @@
 package com.sispd.f1racing.GUI;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Hashtable;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JViewport;
+import com.sispd.f1race.Board;
+import com.sispd.f1race.Bolid;
+import com.sispd.f1race.ConsoleFrame;
+
+import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import com.sispd.f1race.Board;
-import com.sispd.f1race.ConsoleFrame;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.util.*;
+import java.util.List;
 
 /**
  * Program's GUI with all ActionListeners
- * @author Sabina Rydzek, Kacper Furma�ski, Mateusz Kotlarz
+ * @author Sabina Rydzek, Kacper Furma�ski, Mateusz Kotlarz
  *
  */
 public class GUI extends JPanel implements ActionListener, ChangeListener {
@@ -75,7 +61,6 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 		
         trackCB = new JComboBox<String>();
         trackCB.setModel(new DefaultComboBoxModel(new String[] {"Bahrain", "Silverstone"}));
-		trackCB.setBounds(10, 291, 131, 20);
 		trackCB.setActionCommand("changeTrack");
 		trackCB.addActionListener(this);
 		
@@ -112,42 +97,62 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 		autoscroll.addActionListener(this);
 		
 		autoscrollBtn = new JButton("1");
-		autoscrollBtn.setSize(30, 100);
 		autoscrollBtn.setEnabled(false);
 		autoscrollBtn.setActionCommand("autoscrollBtn");
 		autoscrollBtn.addActionListener(this);
         
 		//Zoom
-        zoom = new JSlider(0,3);
+        zoom = new JSlider(0,4);
         Hashtable<Integer, JLabel> hashtable = new Hashtable<>();
-        hashtable.put(0, new JLabel("50%"));
-        hashtable.put(1, new JLabel("100%"));
-        hashtable.put(2, new JLabel("150%"));
-        hashtable.put(3, new JLabel("200%"));
+        hashtable.put(0, new JLabel("1x"));
+        hashtable.put(1, new JLabel("1.5x"));
+        hashtable.put(2, new JLabel("2x"));
+        hashtable.put(3, new JLabel("3x"));
+        hashtable.put(4, new JLabel("4x"));
         zoom.setLabelTable(hashtable);
         zoom.setPaintLabels(true);
-        zoom.setSnapToTicks(true);
+        zoom.setValue(0);
         zoom.addChangeListener(this);
-		
+
+        //Dane rozdzielczości monitora
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenWidth = screenSize.getWidth();
+        screenHeight = screenSize.getHeight();
+        double wspWidth = screenWidth/1366,  wspHeight = screenHeight/768;
+
 		//Control Panel
 		buttonPanel.add(trackCB);
 		buttonPanel.add(simulation);
-		buttonPanel.add(Box.createHorizontalStrut(50));
+		buttonPanel.add(Box.createHorizontalStrut((int)(50*wspWidth)));
 		buttonPanel.add(start);
 		buttonPanel.add(clear);
-		buttonPanel.add(Box.createHorizontalStrut(50));
+		buttonPanel.add(Box.createHorizontalStrut((int)(50*wspWidth)));
 		buttonPanel.add(exit);
-		buttonPanel.add(Box.createHorizontalStrut(50));
+		buttonPanel.add(Box.createHorizontalStrut((int)(30*wspWidth)));
 		buttonPanel.add(new JLabel("Autoscroll:"));
 		buttonPanel.add(autoscroll);
 		buttonPanel.add(autoscrollBtn);
+        buttonPanel.add(Box.createHorizontalStrut((int)(20*wspWidth)));
 		buttonPanel.add(new JLabel("Zoom:"));
 		buttonPanel.add(zoom);
-		buttonPanel.add(Box.createHorizontalStrut(50));
+		buttonPanel.add(Box.createHorizontalStrut((int)(50*wspWidth)));
 		buttonPanel.add(drivers);
 		buttonPanel.add(result);
-	        
-		
+
+        //Scaled Sizes
+        trackCB.setPreferredSize(new Dimension((int)(90*wspWidth),(int)(20*wspHeight)));
+        simulation.setPreferredSize(new Dimension((int)(150*wspWidth),(int)(20*wspHeight)));
+        start.setPreferredSize(new Dimension((int) (70 * wspWidth), (int) (20 * wspHeight)));
+        clear.setPreferredSize(new Dimension((int)(70*wspWidth),(int)(20*wspHeight)));
+        exit.setPreferredSize(new Dimension((int)(70*wspWidth),(int)(20*wspHeight)));
+        autoscroll.setPreferredSize(new Dimension((int)(30*wspWidth),(int)(20*wspHeight)));
+        autoscrollBtn.setPreferredSize(new Dimension((int)(50*wspWidth),(int)(20*wspHeight)));
+        zoom.setPreferredSize(new Dimension((int)(250*wspWidth),(int)(40*wspHeight)));
+        drivers.setPreferredSize(new Dimension((int)(70*wspWidth),(int)(20*wspHeight)));
+        result.setPreferredSize(new Dimension((int)(70*wspWidth),(int)(20*wspHeight)));
+
+        if(screenHeight/screenHeight > 1.5) buttonPanel.setPreferredSize(new Dimension((int)screenWidth,(int)(screenHeight/15.36)));
+
 		//Board creating
 		scrollPane = new JScrollPane();
 		scrollPane.setPreferredSize(new Dimension(1363,729));
@@ -155,14 +160,10 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.getViewport().setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		screenWidth = screenSize.getWidth();
-		screenHeight = screenSize.getHeight();
-		
 		board = new Board((int) screenWidth, (int)screenHeight, scrollPane);
-		board.create();
 		scrollPane.getViewport().add(board);
-		
+        board.setPreferredSize(new Dimension((int) screenWidth-20, (int)screenHeight-(int)(screenHeight/15.36)-20));
+
 		container.add(scrollPane, BorderLayout.CENTER);
 		container.add(buttonPanel, BorderLayout.SOUTH);
 	}
@@ -204,15 +205,58 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 			else if(command.equals("drivers")){ showDriversWindow(); }
 			else if(command.equals("result")){ showResultWindow(); }
 			else if(command.equals("changeTrack")){ board.setTrack((String) trackCB.getSelectedItem()); clearSimulationWindow(); }
+            else if(command.equals("autoscroll"))
+            {
+                if(autoscroll.isSelected()) { board.setAutoscroll(true); autoscrollBtn.setEnabled(true); }
+                else { board.setAutoscroll(false); autoscrollBtn.setEnabled(false); }
+            }
+            else if(command.equals("autoscrollBtn"))
+            {
+                int next = Integer.parseInt(autoscrollBtn.getText());
+                List<Bolid> cars = board.getBolids();
+                if(cars.size() == 0) autoscroll.setSelected(false);
+                else
+                {
+                    int i=0, j=1;
+                    boolean end = false;
+                    while(j< 10 && !end)        //TODO [TEST]sprawdzić czy to 10 nie przeszkadza
+                    {
+                        while(i< cars.size() && cars.get(i).getBolidNumber() != next+j) i++;
+                        if(i != cars.size()) end = true;
+                        else {j++; i=0; }
+                    }
+                    if(j==10) next = cars.get(0).getBolidNumber();
+                    else next = next+j;
+                    autoscrollBtn.setText(next+"");
+                    board.setAutoscrollCarNumber(next);
+                }
+            }
 		}
 	}
-	
-	/**
-	 * Implemented from ChangeListener - Slider and Spinners actions
-	 * Changed Zoom
-	 * @param e
-	 */
-	public void stateChanged(ChangeEvent e) { }
+
+    /**
+     * Implemented from ChangeListener - Slider and Spinners actions
+     * Changed Zoom
+     * @param e
+     */
+    public void stateChanged(ChangeEvent e) {
+        if(e.getSource().equals(zoom))
+        {
+            int x = (int)(scrollPane.getHorizontalScrollBar().getValue()/(2*(board.getZoom()/0.5)) + scrollPane.getWidth()/(2*(board.getZoom()/0.5))/2);   //TODO centrowanie kamery
+            int y = (int)(scrollPane.getVerticalScrollBar().getValue()/(2*(board.getZoom()/0.5)) + scrollPane.getHeight()/(2*(board.getZoom()/0.5))/2);
+            switch(zoom.getValue())
+            {
+                case 0: board.setZoom(1); board.getComponentHandler().componentResized(null); board.repaint(); break;
+                case 1: board.setZoom(1.5); board.getComponentHandler().componentResized(null); board.repaint(); break;
+                case 2: board.setZoom(2); board.getComponentHandler().componentResized(null); board.repaint(); break;
+                case 3: board.setZoom(3); board.getComponentHandler().componentResized(null); board.repaint(); break;
+                case 4: board.setZoom(4); board.getComponentHandler().componentResized(null); board.repaint(); break;
+            }
+            scrollPane.revalidate();
+            scrollPane.getHorizontalScrollBar().setValue((int)((x-scrollPane.getWidth()/(2*(board.getZoom()/0.5))/2)*(2*(board.getZoom()/0.5))));
+            scrollPane.getVerticalScrollBar().setValue((int)((y-scrollPane.getHeight()/(2*(board.getZoom()/0.5))/2)*(2*(board.getZoom()/0.5))));
+        }
+    }
 	
 	/**
 	 * Clear simulation window

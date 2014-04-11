@@ -60,6 +60,7 @@ public class Bolid {
     
     private List<Bolid> bolids;
     private String name;
+    private BufferedImage bufferedImage;
 
     private boolean isRain = false;
     private boolean crashed = false;
@@ -532,34 +533,34 @@ public class Bolid {
         if (overtakingMode) {
             if(overtakeVector!=null) {
                 g.setColor(Color.ORANGE);
-                ((Graphics2D) g).setTransform(customTransform);
+                //((Graphics2D) g).setTransform(customTransform);
                 g.drawLine(locationX, locationY, (int) (locationX + overtakeVector.getX()), (int) (locationY + overtakeVector.getY()));
             }
         }
         if (velocityMode) {
             g.setColor(Color.GREEN);
-            ((Graphics2D) g).setTransform(customTransform);
+            //((Graphics2D) g).setTransform(customTransform);
             g.drawLine(locationX, locationY, (int) (locationX + velocity.getX()), (int) (locationY + velocity.getY()));
         }
 
         if (turnForceMode) {
             if(turnForce!=null) {
                 g.setColor(Color.ORANGE);
-                ((Graphics2D) g).setTransform(customTransform);
+                //((Graphics2D) g).setTransform(customTransform);
                 g.drawLine(locationX, locationY, (int) (locationX + turnForce.getX() * 30), (int) (locationY + turnForce.getY() * 30));
             }
         }
 
         if (steerForceMode) {
             g.setColor(Color.MAGENTA);
-            ((Graphics2D) g).setTransform(customTransform);
+            //((Graphics2D) g).setTransform(customTransform);
             g.drawLine(locationX, locationY, (int) (locationX + steerForce.getX() * 30), (int) (locationY + steerForce.getY() * 30));
         }
 
         if (targetMode) {
             if(target!=null) {
                 g.setColor(Color.YELLOW);
-                ((Graphics2D) g).setTransform(customTransform);
+                //((Graphics2D) g).setTransform(customTransform);
                 g.drawOval((int) (target.getX() * scale - 3), (int) (target.getY() * scale - 3), 6, 6);
             }
         }
@@ -567,8 +568,11 @@ public class Bolid {
 
 
 
-        URL pathSerialized = getClass().getResource("/bolid"+ color +".png");         //TODO jednorazowe czytanie
-        BufferedImage bufferedImage = ImageIO.read(new File(pathSerialized.getFile()));
+        if(bufferedImage == null)
+        {
+            URL pathSerialized = getClass().getResource("/bolid"+ color +".png");
+            bufferedImage = ImageIO.read(new File(pathSerialized.getFile()));
+        }
         double theta = velocity.heading() + Math.PI/2;
 
         Point2D movePoint = new Point.Double(-1.5, -4);
@@ -579,7 +583,8 @@ public class Bolid {
         at.scale(scale/4, scale/4);
         at.rotate(theta, 60*scale/4, 145*scale/4);
 
-        ((Graphics2D) g).setTransform(customTransform);
+
+        //((Graphics2D) g).setTransform(customTransform);
         ((Graphics2D) g).drawImage(bufferedImage, at, null);
         //g.fillPolygon(polygon);
     }
