@@ -17,8 +17,7 @@ import java.util.List;
 
 /**
  * Program's GUI with all ActionListeners
- * @author Sabina Rydzek, Kacper Furma�ski, Mateusz Kotlarz
- *
+ * @author Piotr Brudny, Kacper Furmański, Klaudia Kołdarz, Mateusz Kotlarz, Sabina Rydzek
  */
 public class GUI extends JPanel implements ActionListener, ChangeListener {
 	private static final long serialVersionUID = 1L;
@@ -33,12 +32,10 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	private JSpinner g100, g200, g300, b100, b200, b300, n100, n200, n300, itDelay, refDelay;
 	private JTable table, tableResult;
 	private JCheckBox autoscroll;
-	private Container parent;
 	
 	private double screenWidth, screenHeight;
-	private Timer timer, timerDrivers;
-	private int timerDelay = 20, timerDriversDelay = 300;
-	private boolean notStarted = true;
+	private Timer timerDrivers;
+	private int timerDriversDelay = 300;
 	private double simulationSpeed = 1;
 
 	/**
@@ -47,12 +44,9 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	 */
 	public GUI(Container container) {
 		//GUI Layout
-		parent = container;
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		container.setSize(new Dimension(1024, 768));
 		//Timers
-		timer = new Timer((int)(timerDelay/simulationSpeed), this);
-		timer.stop();
 		timerDrivers = new Timer(timerDriversDelay, this);
 		timerDrivers.stop();
 		
@@ -172,19 +166,15 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	 * Implemented from ActionListener - Buttons and timers actions
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(timer)) {  } 
-		else if(e.getSource().equals(timerDrivers))
-		{ 
-			boolean none = true;
-			if(driversWindow != null && driversWindow.isVisible()) { TablesRefresher.refreshDriversTableModel(board, table); none = false;  }
-			if(resultWindow != null && resultWindow.isVisible()) {  TablesRefresher.refreshResultTableModel(board, tableResult); none = false; }
-			if(none) timerDrivers.stop();
+		if(e.getSource().equals(timerDrivers))
+		{
+			TablesRefresher.refreshDriversTableModel(board, table);
+            TablesRefresher.refreshResultTableModel(board, tableResult);
 		}
 		else 
 		{
 			String command = e.getActionCommand();
 			if (command.equals("exit")) {
-				timer.stop();
 				timerDrivers.stop();
 				board.stopTimer();
 				for(Frame frame : Frame.getFrames())
@@ -195,11 +185,11 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 			{ 
 				if(!board.isTimerRunning()) 
 				{ 
-					board.startTimer();  
-					notStarted = false; 
+					board.startTimer();
 					start.setText("Pause");
+                    timerDrivers.start();
 				}
-				else{ board.stopTimer(); start.setText("Start"); }
+				else{ board.stopTimer(); timerDrivers.stop(); start.setText("Start"); }
 			}
 			else if(command.equals("clear")){ clearSimulationWindow(); }
 			else if(command.equals("drivers")){ showDriversWindow(); }
@@ -219,13 +209,13 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
                 {
                     int i=0, j=1;
                     boolean end = false;
-                    while(j< 10 && !end)        //TODO [TEST]sprawdzić czy to 10 nie przeszkadza
+                    while(j< cars.size()-1 && !end)
                     {
                         while(i< cars.size() && cars.get(i).getBolidNumber() != next+j) i++;
                         if(i != cars.size()) end = true;
                         else {j++; i=0; }
                     }
-                    if(j==10) next = cars.get(0).getBolidNumber();
+                    if(j==cars.size()-1) next = cars.get(0).getBolidNumber();
                     else next = next+j;
                     autoscrollBtn.setText(next+"");
                     board.setAutoscrollCarNumber(next);
@@ -237,13 +227,11 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
     /**
      * Implemented from ChangeListener - Slider and Spinners actions
      * Changed Zoom
-     * @param e
+     * @param e - ChangeEvent
      */
     public void stateChanged(ChangeEvent e) {
         if(e.getSource().equals(zoom))
         {
-            int x = (int)(scrollPane.getHorizontalScrollBar().getValue()/(2*(board.getZoom()/0.5)) + scrollPane.getWidth()/(2*(board.getZoom()/0.5))/2);   //TODO centrowanie kamery
-            int y = (int)(scrollPane.getVerticalScrollBar().getValue()/(2*(board.getZoom()/0.5)) + scrollPane.getHeight()/(2*(board.getZoom()/0.5))/2);
             switch(zoom.getValue())
             {
                 case 0: board.setZoom(1); board.getComponentHandler().componentResized(null); board.repaint(); break;
@@ -253,8 +241,6 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
                 case 4: board.setZoom(4); board.getComponentHandler().componentResized(null); board.repaint(); break;
             }
             scrollPane.revalidate();
-            scrollPane.getHorizontalScrollBar().setValue((int)((x-scrollPane.getWidth()/(2*(board.getZoom()/0.5))/2)*(2*(board.getZoom()/0.5))));
-            scrollPane.getVerticalScrollBar().setValue((int)((y-scrollPane.getHeight()/(2*(board.getZoom()/0.5))/2)*(2*(board.getZoom()/0.5))));
         }
     }
 	
@@ -265,7 +251,6 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	{
 		if(board.isTimerRunning()) { board.stopTimer(); start.setText("Start"); }
 		board.reset();
-		notStarted = true;
 		TablesRefresher.createResultTableModel(board, tableResult);
 	}
 	

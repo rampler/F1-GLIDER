@@ -11,13 +11,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import com.sispd.f1racing.Enums.DriverSkill;
 
+/**
+ * @author Piotr Brudny, Kacper Furmański, Klaudia Kołdarz, Mateusz Kotlarz, Sabina Rydzek
+ */
 public class Bolid {
     private PVector location;
     private PVector velocity;
@@ -30,12 +32,6 @@ public class Bolid {
     private Bolid bolidToFollow;
     private Bolid bolidToOvertake;
     private Bolid bolidOnSide;
-
-    private Date startTime;
-    private Date bestTime = new Date(100000);
-    private Date stopTime;
-    private Date time;
-    private Date finishTime = new Date(0);
 
     private int lastPointOnPathVisited;
     private int lastlastPointOnPathVisited = 0;
@@ -71,8 +67,6 @@ public class Bolid {
     private boolean turnForceMode = false;
     private boolean steerForceMode = false;
     private boolean targetMode = false;
-    private boolean overTakeMode = false;
-    private boolean debugMode;
     
     private DriverSkill driverSkill;
 
@@ -84,22 +78,12 @@ public class Bolid {
     public PVector getLocation(){ return location; }
     public int getBolidNumber(){ return bolidNumber; }
     public int getLaps(){ return laps; }
-    public int getBolidSize(){ return bolidSize; }
     public long getActualLapTime(){ return actualLapTime; }
     public long getBestLapTime(){ return bestLapTime; }
     public double getMaxSpeed(){ return maxSpeed; }
     public double getMaxForceAcceleration(){ return maxForceAcceleration; }
-    public double getSteerForceMultiplier(){ return steerForceMultiplier; }
-    public double getStopAccelerationInTurnLevel(){ return stopAccelerationInTurnLevel; }
-    public double getOldMaxForceAcceleration(){ return oldMaxForceAcceleration; }
-    public double getOldSteerForceMultiplier(){ return oldSteerForceMultiplier; }
     public String getName(){ return name; }
     public boolean isCrashed(){ return crashed; }
-    public boolean getOverTakeMode(){ return overTakeMode; }
-    public boolean getDebugMode(){ return debugMode; }
-    public Date getTime(){ return time; }
-    public Date getFinishTime(){ return finishTime; }
-    public Date getBestTime(){ return bestTime; }
     public DriverSkill getDriverSkill(){ return driverSkill; }
     
     //Setters
@@ -107,10 +91,10 @@ public class Bolid {
     public void setVelocityMode(boolean velocityMode){ this.velocityMode = velocityMode; }
     public void setSteerForceMode(boolean steerForceMode){ this.steerForceMode = steerForceMode; }
     public void setTargetMode(boolean targetMode){ this.targetMode = targetMode; }
-    public void setOverTakeMode(boolean overtakeMode){ this.overTakeMode = overtakeMode; }
+    public void setOvertakingMode(boolean overtakingMode){ this.overtakingMode = overtakingMode; }
 
     //Constructor
-    public Bolid(Path path, int bolidSize, int bolidNumber, DriverSkill driverSkill, double maxSpeed, double maxForceAcceleration, double steerForceMultiplier, double stopAccelerationInTurnLevel, int colorNumber, boolean debugMode, List<Bolid> bolids, String name) {
+    public Bolid(Path path, int bolidSize, int bolidNumber, DriverSkill driverSkill, double maxSpeed, double maxForceAcceleration, double steerForceMultiplier, double stopAccelerationInTurnLevel, int colorNumber, List<Bolid> bolids, String name) {
         this.path = path;
 
         double x = path.get(100*(11-bolidNumber)).getX();
@@ -133,10 +117,8 @@ public class Bolid {
         this.stopAccelerationInTurnLevel = stopAccelerationInTurnLevel; // 0.05
 
         this.color = colorNumber;
-        this.debugMode = debugMode;
         this.bolids = bolids;
         this.name = name;
-        startTime = new Date();
         
         this.actualLapTime = 0;
         this.bestLapTime = 1000000;
@@ -229,20 +211,6 @@ public class Bolid {
                     
                     if(actualLapTime < bestLapTime && laps != 0) bestLapTime = actualLapTime;
             		actualLapTime = 0;
-            		
-                    stopTime = new Date();
-                    time = new Date(stopTime.getTime() - startTime.getTime());
-                    if (laps == 1) {
-                        bestTime = time;
-                    }
-                   else {
-                        if (bestTime.getTime() > time.getTime()) {
-                            bestTime = time;
-                        }
-                    }
-                    startTime = new Date();
-
-                    finishTime = new Date(finishTime.getTime() + time.getTime());
                 }
                 lastlastPointOnPathVisited = lastPointOnPathVisited;
             }
@@ -368,19 +336,14 @@ public class Bolid {
     }
 
     private boolean isOvertakeDone() {
-        if(overtakeVector==null) {
-            return false;
-        }
+        if(overtakeVector==null) return false;
 
         Polygon myPolygon = createPolygonWithNoMove(3);
         PVector sideVector = overtakeVector.getNewWithCustomLength(-25);
 
         myPolygon.translate((int) (sideVector.getX()), (int) (sideVector.getY()));
 
-        if(!bolidToOvertake.isCrash(myPolygon)) {
-            return true;
-        }
-
+        if(!bolidToOvertake.isCrash(myPolygon)) return true;
         return false;
     }
 
@@ -522,38 +485,38 @@ public class Bolid {
         return polygon;
     }
 
-    void display(Graphics g, double scale, AffineTransform customTransform) throws IOException {
+    /**
+     * Display bolid on board
+     * @param g - graphics
+     * @param scale - actual scale
+     * @throws IOException
+     */
+    public void display(Graphics g, double scale) throws IOException {
         int locationX = (int) (location.getX() * scale);
         int locationY = (int) (location.getY() * scale);
-
-        //Polygon polygon = createPolygon(scale);
 
         g.setColor(Color.BLACK);
 
         if (overtakingMode) {
             if(overtakeVector!=null) {
                 g.setColor(Color.ORANGE);
-                //((Graphics2D) g).setTransform(customTransform);
                 g.drawLine(locationX, locationY, (int) (locationX + overtakeVector.getX()), (int) (locationY + overtakeVector.getY()));
             }
         }
         if (velocityMode) {
             g.setColor(Color.GREEN);
-            //((Graphics2D) g).setTransform(customTransform);
             g.drawLine(locationX, locationY, (int) (locationX + velocity.getX()), (int) (locationY + velocity.getY()));
         }
 
         if (turnForceMode) {
             if(turnForce!=null) {
                 g.setColor(Color.ORANGE);
-                //((Graphics2D) g).setTransform(customTransform);
                 g.drawLine(locationX, locationY, (int) (locationX + turnForce.getX() * 30), (int) (locationY + turnForce.getY() * 30));
             }
         }
 
         if (steerForceMode) {
             g.setColor(Color.MAGENTA);
-            //((Graphics2D) g).setTransform(customTransform);
             g.drawLine(locationX, locationY, (int) (locationX + steerForce.getX() * 30), (int) (locationY + steerForce.getY() * 30));
         }
 
@@ -564,9 +527,6 @@ public class Bolid {
                 g.drawOval((int) (target.getX() * scale - 3), (int) (target.getY() * scale - 3), 6, 6);
             }
         }
-
-
-
 
         if(bufferedImage == null)
         {
@@ -583,10 +543,7 @@ public class Bolid {
         at.scale(scale/4, scale/4);
         at.rotate(theta, 60*scale/4, 145*scale/4);
 
-
-        //((Graphics2D) g).setTransform(customTransform);
         ((Graphics2D) g).drawImage(bufferedImage, at, null);
-        //g.fillPolygon(polygon);
     }
 
     private void rotatePoint(double theta, Point2D point) {
@@ -594,7 +551,5 @@ public class Bolid {
     }
 
     @Override
-    public String toString() {
-        return name;
-    }
+    public String toString() { return name; }
 }

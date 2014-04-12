@@ -22,7 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
-
+/**
+ * Class to view simulation parameters
+ * @author Piotr Brudny, Kacper Furmański, Klaudia Kołdarz, Mateusz Kotlarz, Sabina Rydzek
+ */
 public class ConsoleFrame extends JFrame {
 	private JPanel contentPane;
     private List<Bolid> bolidsArray;
@@ -36,16 +39,12 @@ public class ConsoleFrame extends JFrame {
     JLabel lblTurnforce1 = new JLabel("Turn force:");
     JLabel lblCurrentSpeed1 = new JLabel("Current speed:");
     JLabel lblCurrentAcceleration1 = new JLabel("Current acceleration:");
-    JLabel lblLastLap1 = new JLabel("Last lap:");
-    JLabel lblBestLap1 = new JLabel("Best lap:");
     JLabel acceleration2 = new JLabel("Max acceleration:");
     JComboBox bolids2 = new JComboBox();
     JLabel maxspeed2 = new JLabel("Max speed:");
     JLabel turnforce2 = new JLabel("Turn force:");
     JLabel currentspeed2 = new JLabel("Current speed:");
     JLabel curraccel2 = new JLabel("Current acceleration:");
-    JLabel lastlap2 = new JLabel("Last lap:");
-    JLabel bestlap2 = new JLabel("Best lap:");
     JPanel settings = new JPanel();
     JLabel weather = new JLabel("Weather");
     JLabel debug = new JLabel("Debug");
@@ -55,12 +54,7 @@ public class ConsoleFrame extends JFrame {
     JCheckBox target = new JCheckBox("target");
     JCheckBox overtake = new JCheckBox("overtake");
     JCheckBox showInfo = new JCheckBox("Show clouds over drivers");
-    JLabel lblCzas = new JLabel("Time:");
     ChartGenerator chartGenerator;
-    JLabel lblFinishTime = new JLabel("Finish time:");
-    //JComboBox comboBox = new JComboBox();
-    //JButton btnStart = new JButton("Start");
-    JLabel lblFinishTime2 = new JLabel("Finish time:");
 
 
 
@@ -70,11 +64,6 @@ public class ConsoleFrame extends JFrame {
         this.chartGenerator =  chartGenerator;
         this.animationTest = animationTest;
 
-
-//		setResizable(false);
-//		setAlwaysOnTop(true);
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setBounds(100, 100, 400, 389);
 		contentPane = new JPanel();
 		contentPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 		//contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -105,12 +94,6 @@ public class ConsoleFrame extends JFrame {
 		lblCurrentAcceleration1.setBounds(10, 146, 170, 14);
 		bolids.add(lblCurrentAcceleration1);
 
-		lblLastLap1.setBounds(10, 171, 170, 14);
-		bolids.add(lblLastLap1);
-
-		lblBestLap1.setBounds(10, 196, 170, 14);
-		bolids.add(lblBestLap1);
-
 		acceleration2.setBounds(196, 71, 170, 14);
 		bolids.add(acceleration2);
 
@@ -129,44 +112,11 @@ public class ConsoleFrame extends JFrame {
 		curraccel2.setBounds(196, 146, 170, 14);
 		bolids.add(curraccel2);
 
-		lastlap2.setBounds(196, 171, 170, 14);
-		bolids.add(lastlap2);
-
-		bestlap2.setBounds(196, 196, 170, 14);
-		bolids.add(bestlap2);
 		btnZapiszStatystyki.setEnabled(false);
 		btnZapiszStatystyki.setBounds(10, 257, 131, 23);
         btnZapiszStatystyki.addActionListener(new ZapiszStatystyki());
 		
 		bolids.add(btnZapiszStatystyki);
-		
-
-		lblCzas.setBounds(151, 261, 170, 14);
-		bolids.add(lblCzas);
-		
-
-		lblFinishTime.setBounds(10, 221, 170, 14);
-		bolids.add(lblFinishTime);
-		
-
-		lblFinishTime2.setBounds(196, 221, 170, 14);
-		bolids.add(lblFinishTime2);
-		
-
-		//comboBox.setModel(new DefaultComboBoxModel(new String[] {"Bahrain", "Silverstone"}));
-		//comboBox.setBounds(10, 291, 131, 20);
-		//bolids.add(comboBox);
-		
-
-//		btnStart.setBounds(161, 290, 89, 23);
-//		bolids.add(btnStart);
-//		final ConsoleFrame con = this;
-//        btnStart.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                animationTest.reset();
-//            }
-//        });
 
 		tabbedPane.addTab("Settings", null, settings, null);
 		settings.setLayout(null);
@@ -231,7 +181,7 @@ public class ConsoleFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 for (Bolid bolid : bolidsArray) {
-                    bolid.setOverTakeMode(overtake.isSelected());
+                    bolid.setOvertakingMode(overtake.isSelected());
                 }
                 animationTest.repaint();
             }
@@ -257,7 +207,6 @@ public class ConsoleFrame extends JFrame {
             if(!currentBolids.containsKey(bolid.getName())) {
                 bolids1.addItem(bolid);
                 bolids2.addItem(bolid);
-
                 currentBolids.put(bolid.getName(), bolids1.getItemCount()-1);
             }
         }
@@ -265,7 +214,7 @@ public class ConsoleFrame extends JFrame {
 
 
 
-    public void updateFields(int timerDelay) {
+    public void updateFields() {
         Bolid bolid1 = (Bolid) bolids1.getSelectedItem();
         Bolid bolid2 = (Bolid) bolids2.getSelectedItem();
 
@@ -277,21 +226,6 @@ public class ConsoleFrame extends JFrame {
             lblCurrentAcceleration1.setText("Current accel.: " + f.format(bolid1.getAcceleration().magnitude()*25*2.28) + " m/s2");
             lblTurnforce1.setText("Turn force: " + f.format(bolid1.getTurnForce().magnitude()*25*1.28) + " m/s2");
             acceleration1.setText("Max acceleration: " + f.format(bolid1.getMaxForceAcceleration()*25*2.28) + " m/s2");
-            if (bolid1.getTime() != null) {
-                SimpleDateFormat ft =
-                        new SimpleDateFormat ("mm:ss");
-                lblLastLap1.setText("Last lap: " + ft.format(bolid1.getTime()));
-                lblBestLap1.setText("Best lap: " + ft.format(bolid1.getBestTime()));
-                if (bolid1.getLaps() == 3)
-                    lblFinishTime.setText("Finish Time: " + ft.format(bolid1.getFinishTime()));
-
-            }
-            else {
-                lblLastLap1.setText("Last lap: ");
-                lblBestLap1.setText("Best lap: ");
-                lblFinishTime.setText("Finish Time: ");
-            }
-
         }
 
         if(bolid2!=null) {
@@ -300,25 +234,7 @@ public class ConsoleFrame extends JFrame {
            curraccel2.setText("Current accel.: " + f.format(bolid2.getAcceleration().magnitude() * 25 * 2.28) + " m/s2");
            turnforce2.setText("Turn force: " + f.format(bolid2.getTurnForce().magnitude()*25*1.28) + " m/s2");
             acceleration2.setText("Max acceleration: " + f.format(bolid2.getMaxForceAcceleration()*25*2.28) + " m/s2");
-            SimpleDateFormat ft = new SimpleDateFormat ("mm:ss");
-            if (bolid2.getTime() != null) {
-                lastlap2.setText("Last lap: " + ft.format(bolid2.getTime()));
-                bestlap2.setText("Best lap: " + ft.format(bolid2.getBestTime()));
-                if (bolid2.getLaps() == 3)
-                    lblFinishTime2.setText("Finish Time: " + ft.format(bolid2.getFinishTime()));
-
-            }
-            else {
-                lastlap2.setText("Last lap: ");
-                bestlap2.setText("Best lap: ");
-                lblFinishTime2.setText("Finish Time: ");
-            }
-
-
         }
-
-        //SimpleDateFormat ft = new SimpleDateFormat ("mm:ss");
-        //lblCzas.setText("Time: " +  ft.format(date));
 
         boolean finish = true;
         if (!bolidsArray.isEmpty()) {
@@ -328,7 +244,7 @@ public class ConsoleFrame extends JFrame {
                }
             }
 
-            if (finish == true) {
+            if (finish) {
                 btnZapiszStatystyki.setEnabled(true);
             }
         }

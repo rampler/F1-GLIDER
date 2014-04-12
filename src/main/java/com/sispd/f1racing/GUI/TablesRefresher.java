@@ -12,15 +12,14 @@ import com.sispd.f1race.Bolid;
 
 /**
  * Contains static methods to refresh tables models in GUI
- * @author Sabina Rydzek, Kacper Furma�ski, Mateusz Kotlarz
- *
+ * @author Piotr Brudny, Kacper Furmański, Klaudia Kołdarz, Mateusz Kotlarz, Sabina Rydzek
  */
 public class TablesRefresher {
 	
 	/**
 	 * Refresh Drivers Table Model
-	 * @param board
-	 * @param table
+     * @param board - simulation board
+     * @param table - table to refresh
 	 */
 	public static void refreshDriversTableModel(Board board, JTable table)
 	{
@@ -51,8 +50,8 @@ public class TablesRefresher {
 	
 	/**
 	 * Create Result Table Model
-	 * @param board
-	 * @param tableResult
+     * @param board - simulation board
+     * @param tableResult - table to refresh
 	 */
 	public static void createResultTableModel(Board board, JTable tableResult)
 	{
@@ -66,8 +65,8 @@ public class TablesRefresher {
 			data[1] = car.getName();
 			data[2] = car.getDriverSkill(); 
 			data[3] = car.getLaps();
-			data[4] = car.getTime();
-			data[5] = car.getBestTime();
+			data[4] = car.getActualLapTime();
+			data[5] = car.getBestLapTime();
 			defmodel.addRow(data);
 			i++;
 		}
@@ -82,8 +81,8 @@ public class TablesRefresher {
 	
 	/**
 	 * Refresh Results Table Model
-	 * @param board
-	 * @param tableResult
+	 * @param board - simulation board
+	 * @param tableResult - table to refresh
 	 */
 	public static void refreshResultTableModel(Board board, JTable tableResult)
 	{
@@ -100,8 +99,8 @@ public class TablesRefresher {
 				data[1] = car.getName();
 				data[2] = car.getDriverSkill(); 
 				data[3] = car.getLaps();
-				data[4] = car.getTime();
-				data[5] = car.getBestTime();
+				data[4] = car.getActualLapTime();
+				data[5] = car.getBestLapTime();
 				defmodel.addRow(data);
 				i++;
 			}

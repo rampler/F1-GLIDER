@@ -17,17 +17,19 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.MatchResult;
 
+/**
+ * Simulation Board
+ * @author Piotr Brudny, Kacper Furmański, Klaudia Kołdarz, Mateusz Kotlarz, Sabina Rydzek
+ */
 public class Board extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 1L;
     private final Board thisBoard;
     private double scale, zoom = 1, simulationSpeed = 1;
     private final Timer timer;
-    //private Date date;
-    private BufferedImage background;
-    private List<Bolid> bolids = new ArrayList<Bolid>(25);
+    private BufferedImage background, bufferedImagePopup;
+    private List<Bolid> bolids = new ArrayList<>(25);
     private Path path;
     private ConsoleFrame consoleFrame;
-    private boolean debugMode = false;
     private boolean showInfo = true;
     private final int SCREEN_WIDTH, SCREEN_HEIGHT;
     private int bolidSize = 2, timerDelay = 40;
@@ -129,7 +131,7 @@ public class Board extends JPanel implements ActionListener{
      */
     private LinkedList<Driver> loadDrivers(String filename) throws FileNotFoundException
     {
-    	LinkedList<Driver> drivers = new LinkedList<Driver>();
+    	LinkedList<Driver> drivers = new LinkedList<>();
     	File file = new File(filename);
     	Scanner in = new Scanner(file);
     	in.findInLine("(\\d+)");
@@ -161,7 +163,7 @@ public class Board extends JPanel implements ActionListener{
 
 	            int colorNumber = random.nextInt(5)+1;
 
-	            Bolid bolid = new Bolid(path, bolidSize, bolids.size()+1, driver.getDriverSkill(), maxSpeed, acceleration, turnForce, 0.05, colorNumber, debugMode, bolids, driver.getName());
+	            Bolid bolid = new Bolid(path, bolidSize, bolids.size()+1, driver.getDriverSkill(), maxSpeed, acceleration, turnForce, 0.05, colorNumber, bolids, driver.getName());
 	            bolids.add(bolid);
 	        }
 		}
@@ -181,12 +183,15 @@ public class Board extends JPanel implements ActionListener{
             g.drawImage(background, 0, 0, this);
 
             for(Bolid bolid : bolids) {
-                    bolid.display(g, scale, customTransform);
+                    bolid.display(g, scale);
 
                 g.setColor(Color.BLACK);
 
-                URL pathSerializedPopup = getClass().getResource("/popup.png");       //TODO można wczytywać tylko raz, a nie przy każdym repaint
-                BufferedImage bufferedImagePopup = ImageIO.read(new File(pathSerializedPopup.getFile()));
+                if(bufferedImagePopup == null)
+                {
+                    URL pathSerializedPopup = getClass().getResource("/popup.png");
+                    bufferedImagePopup = ImageIO.read(new File(pathSerializedPopup.getFile()));
+                }
 
                 if(showInfo)
                 {
@@ -207,8 +212,8 @@ public class Board extends JPanel implements ActionListener{
     }
 
     /**
-     * Return prefered size of board
-     * @return
+     * Return preferred size of board
+     * @return preferred size Dimension
      */
     @Override
     public Dimension getPreferredSize()
@@ -218,16 +223,11 @@ public class Board extends JPanel implements ActionListener{
 
     /**
      * Action performed by timer
-     * @param e
+     * @param e - ActionEvent
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-//        customTransform = new AffineTransform(); //TODO Autoscroll - 2x wolniejsza symulacja - sprawdzone
-//        customTransform.translate(translateX, translateY);
-//        customTransform.scale(scaleX, scaleY);
-//        componentHandler.componentResized(null);
-
-        List<Bolid> bolidsToRemove = new ArrayList<Bolid>();
+        List<Bolid> bolidsToRemove = new ArrayList<>();
 
         for(Bolid bolid : bolids) {
             if(bolid.isCrashed() ){ // || bolid.getLaps()==3) {
@@ -249,12 +249,10 @@ public class Board extends JPanel implements ActionListener{
         for(Bolid bolid : bolids) {
             bolid.update(timerDelay);
             bolid.follow();
-            if(autoscroll && autoscrollCarNumber == bolid.getBolidNumber())
+            if(autoscroll && autoscrollCarNumber == bolid.getBolidNumber())   //Autoscroll
             {
-                //TODO to repair
-                parent.getHorizontalScrollBar().setValue((int)((bolid.getLocation().getX()/path.width)*(parent.getHorizontalScrollBar().getMaximum()-(parent.getHorizontalScrollBar().getMaximum()/zoom)/2)-(parent.getHorizontalScrollBar().getMaximum()/zoom)/2));
-                parent.getVerticalScrollBar().setValue((int)((bolid.getLocation().getY()/path.height)*(parent.getVerticalScrollBar().getMaximum()-(parent.getVerticalScrollBar().getMaximum()/zoom)/2)-(parent.getVerticalScrollBar().getMaximum()/zoom)/2));
-                System.out.println((bolid.getLocation().getX()/path.width)*parent.getHorizontalScrollBar().getMaximum()+" "+bolid.getLocation().getX()+" "+path.width+" ");
+                parent.getHorizontalScrollBar().setValue((int)(((bolid.getLocation().getX()*scale/getWidth())*parent.getHorizontalScrollBar().getMaximum())-(parent.getHorizontalScrollBar().getMaximum()/zoom)/2));
+                parent.getVerticalScrollBar().setValue((int)(((bolid.getLocation().getY()*scale/getHeight())*parent.getVerticalScrollBar().getMaximum())-(parent.getVerticalScrollBar().getMaximum()/zoom)/2));
             }
 
             chartGenerator.updateTable((int) (bolid.getLocation().getX()), (int) (bolid.getLocation().getY()), bolid.getVelocity().magnitude());
@@ -264,7 +262,7 @@ public class Board extends JPanel implements ActionListener{
         if(consoleFrame != null)
         {
 	        consoleFrame.updateBolidsLists();
-	        consoleFrame.updateFields(timerDelay);
+	        consoleFrame.updateFields();
         }
         this.repaint();
 
