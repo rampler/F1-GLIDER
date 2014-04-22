@@ -1,6 +1,7 @@
 package com.sispd.f1race;
 
 import com.sispd.f1racing.Enums.DriverSkill;
+import com.sispd.f1racing.Enums.Team;
 import com.sispd.f1racing.POJOs.Driver;
 
 import javax.imageio.ImageIO;
@@ -38,7 +39,7 @@ public class Board extends JPanel implements ActionListener{
     private ComponentHandler componentHandler = new ComponentHandler();
     private AffineTransform customTransform = new AffineTransform();
     private final JScrollPane parent;
-    private boolean autoscroll = false;
+    private boolean autoscroll = true;
     private int autoscrollCarNumber = 1;
 
     //Getters
@@ -52,12 +53,19 @@ public class Board extends JPanel implements ActionListener{
     public void setTrack(String track){ this.track = track.toLowerCase(); this.componentHandler.componentResized(null); }
     public void setConsoleFrame(ConsoleFrame consoleFrame){ this.consoleFrame = consoleFrame; }
     public void setShowInfo(boolean showInfo){ this.showInfo = showInfo; }
-    public void setTimerDelay(int timerDelay){ }
+    public void setTimerDelay(int timerDelay){
+        this.timerDelay = timerDelay;
+        timer.setDelay((int)(timerDelay/simulationSpeed));
+    }
     public void startTimer(){ timer.start(); }
     public void stopTimer(){ timer.stop();}
     public void setZoom(double zoom){ this.zoom = zoom; }
     public void setAutoscroll(boolean autoscroll){ this.autoscroll = autoscroll; }
     public void setAutoscrollCarNumber(int carNumber){ autoscrollCarNumber = carNumber; }
+    public void setSimulationSpeed(double simulationSpeed){
+        this.simulationSpeed = simulationSpeed;
+        timer.setDelay((int)(timerDelay/simulationSpeed));
+    }
 
     //Constructor
     public Board(int screenWidth, int screenHeight, JScrollPane parent) {
@@ -80,7 +88,6 @@ public class Board extends JPanel implements ActionListener{
     public void reset() {
         bolids.clear();
 
-        //TODO to erase
         if(consoleFrame != null)
         {
 	        consoleFrame.bolids1.removeAllItems();
@@ -140,9 +147,9 @@ public class Board extends JPanel implements ActionListener{
     	for(int x=0; x<driversCount; x++)
 		{
 			in.nextLine();
-			in.findInLine("(\\w+);(\\w+)");
+			in.findInLine("(\\w+);(\\w+);(\\w+)");
 			result = in.match();
-			drivers.add(new Driver(result.group(1),DriverSkill.valueOf(result.group(2))));
+			drivers.add(new Driver(result.group(1),DriverSkill.valueOf(result.group(2)), Team.valueOf(result.group(3))));
 		}
 		in.close();
     	return drivers;
@@ -157,13 +164,12 @@ public class Board extends JPanel implements ActionListener{
         {
 			LinkedList<Driver> drivers = loadDrivers("drivers.txt");
 			for(Driver driver : drivers) {
-	            double maxSpeed = driver.getDriverSkill().getRandomMistakeParameter()*5+32+random.nextDouble();
-	            double acceleration = driver.getDriverSkill().getRandomMistakeParameter()*random.nextDouble()*0.15+0.2;
-	            double turnForce = driver.getDriverSkill().getRandomMistakeParameter()*random.nextDouble()*0.15+0.05;
+	            double maxSpeed = driver.getDriverSkill().getRandomMistakeParameter()*driver.getTeam().getBolidScore()*5+32+random.nextDouble();
+	            double acceleration = driver.getDriverSkill().getRandomMistakeParameter()*driver.getTeam().getBolidScore()*random.nextDouble()*0.15+0.2;
+	            double turnForce = driver.getDriverSkill().getRandomMistakeParameter()*driver.getTeam().getBolidScore()*random.nextDouble()*0.15+0.05;
+	            int colorNumber = driver.getTeam().getColorNum();
 
-	            int colorNumber = random.nextInt(5)+1;
-
-	            Bolid bolid = new Bolid(path, bolidSize, bolids.size()+1, driver.getDriverSkill(), maxSpeed, acceleration, turnForce, 0.05, colorNumber, bolids, driver.getName());
+	            Bolid bolid = new Bolid(path, bolidSize, bolids.size()+1, driver, maxSpeed, acceleration, turnForce, 0.05, colorNumber, bolids, driver.getName());
 	            bolids.add(bolid);
 	        }
 		}
@@ -229,21 +235,28 @@ public class Board extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         List<Bolid> bolidsToRemove = new ArrayList<>();
 
-        for(Bolid bolid : bolids) {
-            if(bolid.isCrashed() ){ // || bolid.getLaps()==3) {
-                bolidsToRemove.add(bolid);
-            }
-        }
+        for(Bolid bolid : bolids)
+            if(bolid.isCrashed()) bolidsToRemove.add(bolid);
 
-        if(!bolidsToRemove.isEmpty())
+
+        if(!bolidsToRemove.isEmpty())  //Wyjątek kolizji
         {
+            double x=0, y=0;
         	String collisionString = "";
         	for(Bolid bolid : bolidsToRemove) {
         		collisionString+=" "+bolid.getBolidNumber()+". "+bolid.getName();
+                x = bolid.getLocation().getX()*scale;
+                y = bolid.getLocation().getY()*scale;
                 bolids.remove(bolid);
             }
-        	//TODO Zbliżenie na kolizję
+
+            //Zbliżenie na kolizję
+            boolean wasAutoscroll=false;
+            if(autoscroll) { autoscroll = false; wasAutoscroll=true; }
+            parent.getHorizontalScrollBar().setValue((int)(((x/getWidth())*parent.getHorizontalScrollBar().getMaximum())-(parent.getHorizontalScrollBar().getMaximum()/zoom)/2));
+            parent.getVerticalScrollBar().setValue((int)(((y/getHeight())*parent.getVerticalScrollBar().getMaximum())-(parent.getVerticalScrollBar().getMaximum()/zoom)/2));
         	JOptionPane.showMessageDialog(this.getParent(), "Collision on track:"+collisionString+"!");
+            if(wasAutoscroll) autoscroll = true;
         }
 
         for(Bolid bolid : bolids) {
@@ -258,7 +271,6 @@ public class Board extends JPanel implements ActionListener{
             chartGenerator.updateTable((int) (bolid.getLocation().getX()), (int) (bolid.getLocation().getY()), bolid.getVelocity().magnitude());
         }
 
-        //TODO to erase
         if(consoleFrame != null)
         {
 	        consoleFrame.updateBolidsLists();

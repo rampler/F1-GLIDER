@@ -5,14 +5,13 @@ import com.sispd.f1racing.Enums.Tire;
 
 /**
  * Car class contains all car parameters.
- * @author Sabina Rydzek, Kacper Furmañski, Mateusz Kotlarz
+ * @author Sabina Rydzek, Kacper Furmaï¿½ski, Mateusz Kotlarz
  *
  */
 public class Car {
 
-	private final String DRIVER_NAME;
 	private final int POS_START_X, POS_START_Y;
-	private final DriverSkill DRIVER_SKILL;
+    private final Driver DRIVER;
 	private final int NUMBER;
 	private int angle;
 	private double kersSystemPercent;
@@ -28,15 +27,13 @@ public class Car {
 	
 	/**
 	 * Setting up initial parameters
-	 * @param driverName
-	 * @param driverSkill
+	 * @param driver
 	 * @param posStartX
 	 * @param posStartY
 	 */
-	public Car(String driverName, DriverSkill driverSkill, int posStartX, int posStartY, int number, double acceleration)
+	public Car(Driver driver, int posStartX, int posStartY, int number, double acceleration)
 	{
-		DRIVER_NAME = driverName;
-		DRIVER_SKILL = driverSkill;
+		DRIVER = driver;
 		POS_START_X  = posStartX;
 		POS_START_Y = posStartY;
 		NUMBER = number;
@@ -63,10 +60,11 @@ public class Car {
 	public double getAcceleration(){ return acceleration; }
 	public double getSpeed(){ return speed; }
 	public double getTempDistance(){ return tempDistance; }
-	public String getDriverName(){ return DRIVER_NAME; }
+	public String getDriverName(){ return DRIVER.getName(); }
 	public Tire getTireType(){ return tireType; }
-	public DriverSkill getDriverSkills(){ return DRIVER_SKILL; }
+	public DriverSkill getDriverSkills(){ return DRIVER.getDriverSkill(); }
 	public Point[][] getVisibility(){ return visibility; }
+    public Driver getDriver(){ return DRIVER; }
 	
 	//Is's
 	public boolean isKersActivated(){ if(kersIterations > 0) return true; return false; }

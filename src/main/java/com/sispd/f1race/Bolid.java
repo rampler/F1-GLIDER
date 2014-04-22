@@ -16,6 +16,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import com.sispd.f1racing.Enums.DriverSkill;
+import com.sispd.f1racing.POJOs.Driver;
 
 /**
  * @author Piotr Brudny, Kacper Furmański, Klaudia Kołdarz, Mateusz Kotlarz, Sabina Rydzek
@@ -68,7 +69,7 @@ public class Bolid {
     private boolean steerForceMode = false;
     private boolean targetMode = false;
     
-    private DriverSkill driverSkill;
+    private Driver driver;
 
     
     //Getters
@@ -84,7 +85,7 @@ public class Bolid {
     public double getMaxForceAcceleration(){ return maxForceAcceleration; }
     public String getName(){ return name; }
     public boolean isCrashed(){ return crashed; }
-    public DriverSkill getDriverSkill(){ return driverSkill; }
+    public Driver getDriver(){ return driver; }
     
     //Setters
     public void setRain(boolean isRain){ this.isRain = isRain; }
@@ -94,7 +95,7 @@ public class Bolid {
     public void setOvertakingMode(boolean overtakingMode){ this.overtakingMode = overtakingMode; }
 
     //Constructor
-    public Bolid(Path path, int bolidSize, int bolidNumber, DriverSkill driverSkill, double maxSpeed, double maxForceAcceleration, double steerForceMultiplier, double stopAccelerationInTurnLevel, int colorNumber, List<Bolid> bolids, String name) {
+    public Bolid(Path path, int bolidSize, int bolidNumber, Driver driver, double maxSpeed, double maxForceAcceleration, double steerForceMultiplier, double stopAccelerationInTurnLevel, int colorNumber, List<Bolid> bolids, String name) {
         this.path = path;
 
         double x = path.get(100*(11-bolidNumber)).getX();
@@ -109,7 +110,7 @@ public class Bolid {
         steerForce = new PVector(0,0);
         this.bolidSize = bolidSize;  // 3
         this.bolidNumber = bolidNumber;
-        this.driverSkill = driverSkill;
+        this.driver = driver;
 
         this.maxSpeed = maxSpeed; // 35.5
         this.maxForceAcceleration = maxForceAcceleration; // 0.22
@@ -343,7 +344,7 @@ public class Bolid {
 
         myPolygon.translate((int) (sideVector.getX()), (int) (sideVector.getY()));
 
-        if(!bolidToOvertake.isCrash(myPolygon)) return true;
+        if(bolidToOvertake != null && !bolidToOvertake.isCrash(myPolygon)) return true;
         return false;
     }
 

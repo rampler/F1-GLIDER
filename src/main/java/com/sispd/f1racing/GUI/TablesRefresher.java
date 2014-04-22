@@ -23,7 +23,7 @@ public class TablesRefresher {
 	 */
 	public static void refreshDriversTableModel(Board board, JTable table)
 	{
-		DefaultTableModel defmodel = new DefaultTableModel(null, new String[] {"No. ", "Name", "Skill", "Lap", "Speed", "Accelerate", "TurnForce"}); 
+		DefaultTableModel defmodel = new DefaultTableModel(null, new String[] {"No. ", "Name", "Skill", "Team", "Speed", "Accelerate", "TurnForce"});
 		DecimalFormat f = new DecimalFormat("00.00");
 		DecimalFormat f2 = new DecimalFormat("00");
 		List<Bolid> cars = board.getBolids();
@@ -32,8 +32,8 @@ public class TablesRefresher {
 			Object[] data = new Object[7];
 			data[0] = car.getBolidNumber();
 			data[1] = car.getName();
-			data[2] = car.getDriverSkill(); 
-			data[3] = car.getLaps();
+			data[2] = car.getDriver().getDriverSkill();
+			data[3] = car.getDriver().getTeam().toString();
 			data[4] = f2.format(car.getVelocity().magnitude()*25*0.36) + " km/h";
 			data[5] = f.format(car.getAcceleration().magnitude()*25*2.28) + " m/s2";
 			data[6] = f.format(car.getTurnForce().magnitude()*25*1.28) + " m/s2";//car.getKersSystemPercent()+" %";
@@ -41,7 +41,7 @@ public class TablesRefresher {
 		}
         table.setModel(defmodel);
         table.getColumnModel().getColumn(0).setPreferredWidth(27);
-		table.getColumnModel().getColumn(3).setPreferredWidth(27);
+		table.getColumnModel().getColumn(3).setPreferredWidth(57);
 		table.getColumnModel().getColumn(4).setPreferredWidth(45);
 		table.getColumnModel().getColumn(5).setPreferredWidth(55);
 		table.getColumnModel().getColumn(6).setPreferredWidth(55);
@@ -63,7 +63,7 @@ public class TablesRefresher {
 			Object[] data = new Object[6];
 			data[0] = i+1;
 			data[1] = car.getName();
-			data[2] = car.getDriverSkill(); 
+			data[2] = car.getDriver().getDriverSkill();
 			data[3] = car.getLaps();
 			data[4] = car.getActualLapTime();
 			data[5] = car.getBestLapTime();
@@ -87,7 +87,7 @@ public class TablesRefresher {
 	public static void refreshResultTableModel(Board board, JTable tableResult)
 	{
 		TableModel oldModel = tableResult.getModel();
-		DefaultTableModel defmodel = new DefaultTableModel(null, new String[] {"Pos.", "Name", "Skill", "Lap", "Actual Lap Time", "Best Lap Time"}); 
+		DefaultTableModel defmodel = new DefaultTableModel(null, new String[] {"Pos.", "Name", "Skill", "Lap", "Actual Lap Time", "Best Lap Time"});
 		List<Bolid> cars = board.getBolids();
 		if(oldModel.getColumnCount() == 0) //First Time
 		{
@@ -97,7 +97,7 @@ public class TablesRefresher {
 				Object[] data = new Object[6];
 				data[0] = i+1;
 				data[1] = car.getName();
-				data[2] = car.getDriverSkill(); 
+				data[2] = car.getDriver().getDriverSkill();
 				data[3] = car.getLaps();
 				data[4] = car.getActualLapTime();
 				data[5] = car.getBestLapTime();

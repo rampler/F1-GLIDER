@@ -24,19 +24,23 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	private Board board;
 	
 	private JButton exit, simulation, start, clear, drivers, result, autoscrollBtn;
-	private JComboBox<String> drynessCB, tiresCB, trackCB;
+	private JComboBox<String> trackCB;
 	private JScrollPane scrollPane;
 	private JPanel buttonPanel;
-	private JSlider zoom, simSpeed;
+	private JSlider zoom;
 	private JFrame driversWindow, paramWindow, resultWindow;
-	private JSpinner g100, g200, g300, b100, b200, b300, n100, n200, n300, itDelay, refDelay;
 	private JTable table, tableResult;
 	private JCheckBox autoscroll;
 	
 	private double screenWidth, screenHeight;
 	private Timer timerDrivers;
 	private int timerDriversDelay = 300;
-	private double simulationSpeed = 1;
+
+    //Setters
+    public void setTimerDriversDelay(int timerDriversDelay){
+        this.timerDriversDelay = timerDriversDelay;
+        timerDrivers.setDelay(timerDriversDelay);
+    }
 
 	/**
 	 * Initialize GUI
@@ -89,9 +93,10 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 		autoscroll = new JCheckBox();
 		autoscroll.setActionCommand("autoscroll");
 		autoscroll.addActionListener(this);
+        autoscroll.setSelected(true);
 		
 		autoscrollBtn = new JButton("1");
-		autoscrollBtn.setEnabled(false);
+		autoscrollBtn.setEnabled(true);
 		autoscrollBtn.setActionCommand("autoscrollBtn");
 		autoscrollBtn.addActionListener(this);
         
@@ -265,7 +270,7 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 			driversWindow.setUndecorated(true);
 			driversWindow.setAlwaysOnTop(true);
 			driversWindow.setLayout(new BorderLayout());
-			driversWindow.setBounds((int)(screenWidth-455-19), (int)(screenHeight-218-(buttonPanel.getHeight()+19)), 455, 218);
+			driversWindow.setBounds((int)(screenWidth-485-19), (int)(screenHeight-200-(buttonPanel.getHeight()+19)), 485, 200);
 			JPanel mainPanel = new JPanel(new BorderLayout());
 			timerDrivers.start();
 			
@@ -290,7 +295,7 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 			resultWindow.setUndecorated(true);
 			resultWindow.setAlwaysOnTop(true);
 			resultWindow.setLayout(new BorderLayout());
-			resultWindow.setBounds(0, 0, 455, 218);
+			resultWindow.setBounds(0, 0, 455, 200);
 			JPanel mainPanel = new JPanel(new BorderLayout());
 			timerDrivers.start();
 			
@@ -311,10 +316,10 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	{
 		if(paramWindow == null)
 		{
-			paramWindow = new ConsoleFrame(board.getBolids(), board.getChartGenerator(), board);
+			paramWindow = new ConsoleFrame(this, board.getBolids(), board.getChartGenerator(), board);
 			paramWindow.setUndecorated(true);
 			paramWindow.setAlwaysOnTop(true);
-			paramWindow.setBounds(0, (int)(screenHeight-329-(buttonPanel.getHeight()+19)), 390, 329);
+			paramWindow.setBounds(0, (int)(screenHeight-299-(buttonPanel.getHeight()+19)), 390, 299);
 			paramWindow.setVisible(true);
 			board.setConsoleFrame((ConsoleFrame) paramWindow);
 		}
