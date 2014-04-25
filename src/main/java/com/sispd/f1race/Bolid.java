@@ -36,7 +36,7 @@ public class Bolid {
 
     private int lastPointOnPathVisited;
     private int lastlastPointOnPathVisited = 0;
-    private int laps = 0;
+    private int laps = 1;
     private int step = 0;
     private int startDelay = 25;
     private int color;
@@ -277,7 +277,7 @@ public class Bolid {
         calculateSteerForce(target);
         updateVelocity();
 
-        keepMinimumSpeed(6);
+        keepMinimumSpeed(7);
     }
 
     private void updateVelocity() {
@@ -307,7 +307,7 @@ public class Bolid {
         }
 
         if(!startPhase && velocity.magnitude()<minimumSpeed) {
-            velocity = velocity.getNewWithCustomLength(minimumSpeed);
+            velocity = velocity.getNewWithCustomLength(minimumSpeed+Math.random());
         }
     }
 

@@ -3,6 +3,7 @@ package com.sispd.f1race;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,6 @@ public class Path implements Serializable {
     public int startY;
     public int radius;
     public String name;
-
 
     public Path(int width, int height, int startX, int startY, int radius, String name) {
         points = new ArrayList<PVector>(100000);
@@ -76,6 +76,18 @@ public class Path implements Serializable {
         ((Graphics2D) g).setTransform(customTransform);
 
         g.drawPolygon(polygon);
+
+        //Drukowanie mety
+        g.setColor(Color.WHITE);
+        ((Graphics2D) g).setStroke(new BasicStroke((int)(20*scale)));
+        double diff = Math.abs(points.get(1100).getY()-points.get(1050).getY());
+        AffineTransform temp = AffineTransform.getTranslateInstance((int)(points.get(1100).getX()*scale),(int)(points.get(1100).getY()*scale));
+        temp.rotate(Math.toRadians(diff));
+        ((Graphics2D) g).setTransform(temp);
+        int metaWidth = (int)(20*scale);
+        if(metaWidth == 0) metaWidth++;
+        g.fillRect(-(int)(20*scale)/2,-(int)(165*scale)/2,metaWidth,(int)(165*scale));
+        ((Graphics2D) g).setTransform(customTransform);
     }
 
     public int size() {
