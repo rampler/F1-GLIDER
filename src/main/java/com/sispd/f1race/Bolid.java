@@ -45,7 +45,8 @@ public class Bolid {
     
     private long actualLapTime;
 	private long bestLapTime;
-    
+
+    private double minimumSpeed = 7;
     private double maxSpeed;
     private double maxForceAcceleration;
     private double steerForceMultiplier;
@@ -73,19 +74,19 @@ public class Bolid {
 
     
     //Getters
-    public PVector getVelocity(){ return velocity; }
-    public PVector getAcceleration(){ return acceleration; }
-    public PVector getTurnForce(){ return turnForce; }
-    public PVector getLocation(){ return location; }
-    public int getBolidNumber(){ return bolidNumber; }
-    public int getLaps(){ return laps; }
-    public long getActualLapTime(){ return actualLapTime; }
-    public long getBestLapTime(){ return bestLapTime; }
-    public double getMaxSpeed(){ return maxSpeed; }
-    public double getMaxForceAcceleration(){ return maxForceAcceleration; }
-    public String getName(){ return name; }
-    public boolean isCrashed(){ return crashed; }
-    public Driver getDriver(){ return driver; }
+    public PVector  getVelocity(){ return velocity; }
+    public PVector  getAcceleration(){ return acceleration; }
+    public PVector  getTurnForce(){ return turnForce; }
+    public PVector  getLocation(){ return location; }
+    public int      getBolidNumber(){ return bolidNumber; }
+    public int      getLaps(){ return laps; }
+    public long     getActualLapTime(){ return actualLapTime; }
+    public long     getBestLapTime(){ return bestLapTime; }
+    public double   getMaxSpeed(){ return maxSpeed; }
+    public double   getMaxForceAcceleration(){ return maxForceAcceleration; }
+    public String   getName(){ return name; }
+    public boolean  isCrashed(){ return crashed; }
+    public Driver   getDriver(){ return driver; }
     
     //Setters
     public void setRain(boolean isRain){ this.isRain = isRain; }
@@ -93,6 +94,7 @@ public class Bolid {
     public void setSteerForceMode(boolean steerForceMode){ this.steerForceMode = steerForceMode; }
     public void setTargetMode(boolean targetMode){ this.targetMode = targetMode; }
     public void setOvertakingMode(boolean overtakingMode){ this.overtakingMode = overtakingMode; }
+    public void setMinimumSpeed(double minimumSpeed){ this.minimumSpeed = minimumSpeed; }
 
     //Constructor
     public Bolid(Path path, int bolidSize, int bolidNumber, Driver driver, double maxSpeed, double maxForceAcceleration, double steerForceMultiplier, double stopAccelerationInTurnLevel, int colorNumber, List<Bolid> bolids, String name) {
@@ -277,7 +279,7 @@ public class Bolid {
         calculateSteerForce(target);
         updateVelocity();
 
-        keepMinimumSpeed(7);
+        keepMinimumSpeed(minimumSpeed);
     }
 
     private void updateVelocity() {
@@ -301,7 +303,7 @@ public class Bolid {
 
     }
 
-    private void keepMinimumSpeed(int minimumSpeed) {
+    private void keepMinimumSpeed(double minimumSpeed) {
         if(step<startDelay+25) {
             startPhase = false;
         }

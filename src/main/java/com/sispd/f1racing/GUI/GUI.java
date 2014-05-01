@@ -316,7 +316,7 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 	{
 		if(paramWindow == null)
 		{
-			paramWindow = new ConsoleFrame(this, board.getBolids(), board.getChartGenerator(), board);
+			paramWindow = new ConsoleFrame(this, board.getChartGenerator(), board);
 			paramWindow.setUndecorated(true);
 			paramWindow.setAlwaysOnTop(true);
 			paramWindow.setBounds(0, (int)(screenHeight-299-(buttonPanel.getHeight()+19)), 390, 299);

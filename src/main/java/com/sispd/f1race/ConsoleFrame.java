@@ -21,8 +21,7 @@ import javax.swing.event.ChangeListener;
  */
 public class ConsoleFrame extends JFrame {
 	private JPanel contentPane;
-    private List<Bolid> bolidsArray;
-    Board board;
+    private Board board;
 
     JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
     JPanel bolids = new JPanel();
@@ -51,13 +50,10 @@ public class ConsoleFrame extends JFrame {
     final JSlider simSpeed = new JSlider(0,5);
     final JSpinner itDelay = new JSpinner(new SpinnerNumberModel(40, 1, 1000, 1));
     final JSpinner refDelay = new JSpinner(new SpinnerNumberModel(300, 1, 5000, 1));
+    final JSpinner keepMinimumSpinner = new JSpinner(new SpinnerNumberModel(63, 1, 300, 1));
     ChartGenerator chartGenerator;
 
-
-
-
-    public ConsoleFrame(final GUI parent, final List<Bolid> bolidsArray, ChartGenerator chartGenerator, final Board board) {
-        this.bolidsArray = bolidsArray;
+    public ConsoleFrame(final GUI parent, ChartGenerator chartGenerator, final Board board) {
         this.chartGenerator =  chartGenerator;
         this.board = board;
 
@@ -86,17 +82,34 @@ public class ConsoleFrame extends JFrame {
         }
         final JComboBox<String> drynessCB = new JComboBox<String>(list);
         drynessCB.setActionCommand("changedDryness");
+        drynessCB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(Bolid bolid : board.getBolids()){
+                    if(drynessCB.getSelectedIndex()==1){
+                        bolid.setRain(true);
+                        rainy.setSelected(true);
+                    }
+                    else{
+                        bolid.setRain(false);
+                        rainy.setSelected(false);
+                    }
+                }
+            }
+        });
 
         //Tires equipped
-        list = new String[2];
-        i=0;
-        for(Tire value : Tire.values())
-        {
-            list[i] = value.toString();
-            i++;
-        }
-        final JComboBox<String> tiresCB = new JComboBox<String>(list);
-        tiresCB.setActionCommand("changedTires");
+//        list = new String[2];
+//        i=0;
+//        for(Tire value : Tire.values())
+//        {
+//            list[i] = value.toString();
+//            i++;
+//        }
+//        final JComboBox<String> tiresCB = new JComboBox<String>(list);
+//        tiresCB.setActionCommand("changedTires");
+        //Keep minimum speed
+
 
         //TimersDelays
         itDelay.addChangeListener(new ChangeListener() {
@@ -111,15 +124,25 @@ public class ConsoleFrame extends JFrame {
                 parent.setTimerDriversDelay((int) refDelay.getValue());
             }
         });
+        keepMinimumSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                for(Bolid bolid : board.getBolids())
+                    bolid.setMinimumSpeed((int)keepMinimumSpinner.getValue()/9);
+            }
+        });
+
 
         optionsPanel.add(new JLabel(" Track dryness: "));
         optionsPanel.add(drynessCB);
-        optionsPanel.add(new JLabel(" Tires equipped: "));
-        optionsPanel.add(tiresCB);
+//        optionsPanel.add(new JLabel(" Tires equipped: "));
+//        optionsPanel.add(tiresCB);
         optionsPanel.add(new JLabel(" Iteration delay(ms):"));
         optionsPanel.add(itDelay);
         optionsPanel.add(new JLabel(" Results refreshing(ms):"));
         optionsPanel.add(refDelay);
+        optionsPanel.add(new JLabel(" Keep minimum speed(km/h):"));
+        optionsPanel.add(keepMinimumSpinner);
 
         optionsPanel.add(new JLabel(" Acceleration(m/s^2): "));
         optionsPanel.add(new JLabel(""));
@@ -128,23 +151,17 @@ public class ConsoleFrame extends JFrame {
         JPanel accPanel = new JPanel();
         accPanel.setLayout(new GridLayout(5,5));
 
-        JSpinner g100 = new JSpinner(new SpinnerNumberModel(16.50, 0.00, 100.00, 0.01));
-        JSpinner g200 = new JSpinner(new SpinnerNumberModel(14.70, 0.00, 100.00, 0.01));
-        JSpinner g300 = new JSpinner(new SpinnerNumberModel(9.76, 0.00, 100.00, 0.01));
+        final JSpinner g100 = new JSpinner(new SpinnerNumberModel(16.50, 0.00, 100.00, 0.01));
+        final JSpinner g200 = new JSpinner(new SpinnerNumberModel(14.70, 0.00, 100.00, 0.01));
+        final JSpinner g300 = new JSpinner(new SpinnerNumberModel(9.76, 0.00, 100.00, 0.01));
 
-        JSpinner b100 = new JSpinner(new SpinnerNumberModel(-24.00, -100.00, 0.00, 0.01));
-        JSpinner b200 = new JSpinner(new SpinnerNumberModel(-21.00, -100.00, 0.00, 0.01));
-        JSpinner b300 = new JSpinner(new SpinnerNumberModel(-17.30, -100.00, 0.00, 0.01));
+        final JSpinner b100 = new JSpinner(new SpinnerNumberModel(-24.00, -100.00, 0.00, 0.01));
+        final JSpinner b200 = new JSpinner(new SpinnerNumberModel(-21.00, -100.00, 0.00, 0.01));
+        final JSpinner b300 = new JSpinner(new SpinnerNumberModel(-17.30, -100.00, 0.00, 0.01));
 
-        JSpinner n100 = new JSpinner(new SpinnerNumberModel(-2.00, -100.00, 0.00, 0.01));
-        JSpinner n200 = new JSpinner(new SpinnerNumberModel(-2.30, -100.00, 0.00, 0.01));
-        JSpinner n300 = new JSpinner(new SpinnerNumberModel(-2.70, -100.00, 0.00, 0.01));
-
-        //TODO to erase
-        g100.setEnabled(false); g200.setEnabled(false); g300.setEnabled(false);
-        b100.setEnabled(false); b200.setEnabled(false); b300.setEnabled(false);
-        n100.setEnabled(false); n200.setEnabled(false); n300.setEnabled(false);
-        tiresCB.setEnabled(false); drynessCB.setEnabled(false);
+        final JSpinner n100 = new JSpinner(new SpinnerNumberModel(-2.00, -100.00, 0.00, 0.01));
+        final JSpinner n200 = new JSpinner(new SpinnerNumberModel(-2.30, -100.00, 0.00, 0.01));
+        final JSpinner n300 = new JSpinner(new SpinnerNumberModel(-2.70, -100.00, 0.00, 0.01));
 
         JButton restore = new JButton("Default");
         restore.addActionListener(new ActionListener() {
@@ -153,8 +170,46 @@ public class ConsoleFrame extends JFrame {
                 itDelay.setValue(40);
                 refDelay.setValue(300);
                 simSpeed.setValue(2);
-                tiresCB.setSelectedIndex(0);
+                //tiresCB.setSelectedIndex(0);
                 drynessCB.setSelectedIndex(0);
+                keepMinimumSpinner.setValue(63);
+
+                //Table of accelerations
+                double[][] table = defaultAccelerationTable();
+                g100.setValue(table[0][0]);
+                g200.setValue(table[0][1]);
+                g300.setValue(table[0][2]);
+                b100.setValue(table[1][0]);
+                b200.setValue(table[1][1]);
+                b300.setValue(table[1][2]);
+                n100.setValue(table[2][0]);
+                n200.setValue(table[2][1]);
+                n300.setValue(table[2][2]);
+            }
+
+            /**
+             * Returning table of default accelerations values
+             * In first row is reaction to gas
+             * In second - break
+             * In last - without gas or break
+             * @return - default acceleration table
+             */
+            private double[][] defaultAccelerationTable()
+            {
+                double [][] table = new double[3][3];
+                //gas
+                table[0][0] = 16.5; //0-100
+                table[0][1] = 14.7; //100-200
+                table[0][2] = 9.76; //200-300
+                //break
+                table[1][0] = -24; //0-100
+                table[1][1] = -21; //100-200
+                table[1][2] = -17.3; //200-300
+                //none
+                table[2][0] = -2; //0-100
+                table[2][1] = -2.3; //100-200
+                table[2][2] = -2.7; //200-300
+                return table;
             }
         });
 
@@ -240,7 +295,7 @@ public class ConsoleFrame extends JFrame {
 		rainy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (Bolid bolid : bolidsArray) {
+                for (Bolid bolid : board.getBolids()) {
                     bolid.setRain(rainy.isSelected());
                 }
             }
@@ -251,7 +306,7 @@ public class ConsoleFrame extends JFrame {
         velocity.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (Bolid bolid : bolidsArray) {
+                for (Bolid bolid : board.getBolids()) {
                     bolid.setVelocityMode(velocity.isSelected());
                 }
                 board.repaint();
@@ -263,7 +318,7 @@ public class ConsoleFrame extends JFrame {
         acceleration.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (Bolid bolid : bolidsArray) {
+                for (Bolid bolid : board.getBolids()) {
                     bolid.setSteerForceMode(acceleration.isSelected());
                 }
                 board.repaint();
@@ -275,7 +330,7 @@ public class ConsoleFrame extends JFrame {
         target.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (Bolid bolid : bolidsArray) {
+                for (Bolid bolid : board.getBolids()) {
                     bolid.setTargetMode(target.isSelected());
                 }
                 board.repaint();
@@ -287,7 +342,7 @@ public class ConsoleFrame extends JFrame {
         overtake.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (Bolid bolid : bolidsArray) {
+                for (Bolid bolid : board.getBolids()) {
                     bolid.setOvertakingMode(overtake.isSelected());
                 }
                 board.repaint();
@@ -356,7 +411,7 @@ public class ConsoleFrame extends JFrame {
     private final JButton btnZapiszStatystyki = new JButton("Zapisz statystyki");
 
     public void updateBolidsLists() {
-        for(Bolid bolid : bolidsArray) {
+        for(Bolid bolid : board.getBolids()) {
             if(!currentBolids.containsKey(bolid.getName())) {
                 bolids1.addItem(bolid);
                 bolids2.addItem(bolid);
@@ -390,8 +445,8 @@ public class ConsoleFrame extends JFrame {
         }
 
         boolean finish = true;
-        if (!bolidsArray.isEmpty()) {
-            for(Bolid bolid : bolidsArray) {
+        if (!board.getBolids().isEmpty()) {
+            for(Bolid bolid : board.getBolids()) {
                if (bolid.getLaps() < 3) {
                    finish = false;
                }
