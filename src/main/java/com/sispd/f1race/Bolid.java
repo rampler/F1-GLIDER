@@ -42,6 +42,7 @@ public class Bolid {
     private int color;
     private int bolidSize;
     private int bolidNumber;
+    private int kersIterations = 0;
     
     private long actualLapTime;
 	private long bestLapTime;
@@ -53,6 +54,7 @@ public class Bolid {
     private double stopAccelerationInTurnLevel;
     private double oldMaxForceAcceleration;
     private double oldSteerForceMultiplier;
+    private double kersSystemPercent;
 
     private Path path;
     
@@ -84,6 +86,7 @@ public class Bolid {
     public long     getBestLapTime(){ return bestLapTime; }
     public double   getMaxSpeed(){ return maxSpeed; }
     public double   getMaxForceAcceleration(){ return maxForceAcceleration; }
+    public int      getKersSystemPercent(){ return (int) kersSystemPercent; }
     public String   getName(){ return name; }
     public boolean  isCrashed(){ return crashed; }
     public Driver   getDriver(){ return driver; }
@@ -299,6 +302,7 @@ public class Bolid {
 
         caclucateAcceleration();
 
+        if(kersIterations > 0) acceleration.multiply(1.1);
         steerForce = PVector.add(turnForce, acceleration);
 
     }
@@ -380,23 +384,37 @@ public class Bolid {
         double speed = velocity.magnitude();
 
         boolean shouldBrake = breakingValue>0;
+
         boolean isInTurn = turnForce.magnitude()>stopAccelerationInTurnLevel;
         boolean isOver200kmph = speed>21;
 
         if(!shouldBrake && !isInTurn && isOver200kmph) {
             double accelerationOver200kmph = calculateAccelerationOver200kmph(speed);
-
             acceleration = velocity.getNewWithCustomLength(accelerationOver200kmph);
-        } else if(!shouldBrake && !isInTurn && !isOver200kmph) {
-            acceleration = velocity.getNewWithCustomLength(maxForceAcceleration);
-        } else if(isInTurn) {
-            acceleration = velocity.getNewWithCustomLength(0);
         }
+        else if(!shouldBrake && !isInTurn && !isOver200kmph) acceleration = velocity.getNewWithCustomLength(maxForceAcceleration);
+        else if(isInTurn) acceleration = velocity.getNewWithCustomLength(0);
 
-        if(shouldBrake) {
+        if(shouldBrake){
             acceleration = velocity.getNewWithCustomLength(-breakingValue);
+            addKersSystemPercent(breakingValue/3);
         }
     }
+
+    /**
+     * Add percent to KERS Progress
+     * @param percent
+     */
+    public void addKersSystemPercent(double percent){
+        if(kersSystemPercent+percent < 100 && percent >= 0) kersSystemPercent += percent;
+        else kersSystemPercent = 100;
+    }
+
+    /**
+     * Activate KERS for 6,7s
+     * KERS Percent Progress change from 100% to 0%
+     */
+    public void activateKers(int timerDelay){ kersIterations = 6700/timerDelay; kersSystemPercent = 0; }
 
     private double calculateAccelerationOver200kmph(double x) {
         return 7.59532
@@ -409,7 +427,7 @@ public class Bolid {
     }
     
     public void update(int timerDelay) {
-    	
+
         if(isRain && !weatherChanged) {
             oldMaxForceAcceleration = maxForceAcceleration;
             oldSteerForceMultiplier = steerForceMultiplier;
@@ -427,10 +445,14 @@ public class Bolid {
             weatherChanged = false;
         }
 
+        //Aktywacja KERS
+        if(kersSystemPercent == 100 && target != null && Math.sqrt((target.getX()-location.getX())*(target.getX()-location.getX())+(target.getY()-location.getY())*(target.getY()-location.getY())) > 120) activateKers(timerDelay);
+
         location.add(velocity);
         steerForce.multiply(0);
 
         step++;
+        if(kersIterations > 0) kersIterations--;
         actualLapTime+=timerDelay;
     }
 

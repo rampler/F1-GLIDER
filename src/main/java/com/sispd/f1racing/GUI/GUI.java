@@ -270,7 +270,7 @@ public class GUI extends JPanel implements ActionListener, ChangeListener {
 			driversWindow.setUndecorated(true);
 			driversWindow.setAlwaysOnTop(true);
 			driversWindow.setLayout(new BorderLayout());
-			driversWindow.setBounds((int)(screenWidth-485-19), (int)(screenHeight-200-(buttonPanel.getHeight()+19)), 485, 200);
+			driversWindow.setBounds((int)(screenWidth-515-19), (int)(screenHeight-200-(buttonPanel.getHeight()+19)), 515, 200);
 			JPanel mainPanel = new JPanel(new BorderLayout());
 			timerDrivers.start();
 			

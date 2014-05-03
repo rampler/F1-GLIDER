@@ -23,13 +23,13 @@ public class TablesRefresher {
 	 */
 	public static void refreshDriversTableModel(Board board, JTable table)
 	{
-		DefaultTableModel defmodel = new DefaultTableModel(null, new String[] {"No. ", "Name", "Skill", "Team", "Speed", "Accelerate", "TurnForce"});
+		DefaultTableModel defmodel = new DefaultTableModel(null, new String[] {"No. ", "Name", "Skill", "Team", "Speed", "Accelerate", "TurnForce", "KERS"});
 		DecimalFormat f = new DecimalFormat("00.00");
 		DecimalFormat f2 = new DecimalFormat("00");
 		List<Bolid> cars = board.getBolids();
 		for(Bolid car : cars)
 		{
-			Object[] data = new Object[7];
+			Object[] data = new Object[8];
 			data[0] = car.getBolidNumber();
 			data[1] = car.getName();
 			data[2] = car.getDriver().getDriverSkill();
@@ -37,6 +37,7 @@ public class TablesRefresher {
 			data[4] = f2.format(car.getVelocity().magnitude()*25*0.36) + " km/h";
 			data[5] = f.format(car.getAcceleration().magnitude()*25*2.28) + " m/s2";
 			data[6] = f.format(car.getTurnForce().magnitude()*25*1.28) + " m/s2";//car.getKersSystemPercent()+" %";
+            data[7] = car.getKersSystemPercent() + "%";
 			defmodel.addRow(data);
 		}
         table.setModel(defmodel);
@@ -45,6 +46,7 @@ public class TablesRefresher {
 		table.getColumnModel().getColumn(4).setPreferredWidth(45);
 		table.getColumnModel().getColumn(5).setPreferredWidth(55);
 		table.getColumnModel().getColumn(6).setPreferredWidth(55);
+        table.getColumnModel().getColumn(7).setPreferredWidth(30);
 		table.repaint();
 	}
 	
