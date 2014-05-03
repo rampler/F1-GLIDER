@@ -55,6 +55,7 @@ public class Bolid {
     private double oldMaxForceAcceleration;
     private double oldSteerForceMultiplier;
     private double kersSystemPercent;
+    private double breakingForceScale=1;
 
     private Path path;
     
@@ -98,6 +99,9 @@ public class Bolid {
     public void setTargetMode(boolean targetMode){ this.targetMode = targetMode; }
     public void setOvertakingMode(boolean overtakingMode){ this.overtakingMode = overtakingMode; }
     public void setMinimumSpeed(double minimumSpeed){ this.minimumSpeed = minimumSpeed; }
+    public void setBreakingForceScale(double breakingForceScale){ this.breakingForceScale = breakingForceScale; }
+    public void setMaxForceAcceleration(double maxForceAcceleration){ this.maxForceAcceleration = maxForceAcceleration; }
+    public void setMinimumAcceleration(double minimumAcceleration){ acceleration.add(new PVector(minimumAcceleration, minimumAcceleration)); }    //TODO test
 
     //Constructor
     public Bolid(Path path, int bolidSize, int bolidNumber, Driver driver, double maxSpeed, double maxForceAcceleration, double steerForceMultiplier, double stopAccelerationInTurnLevel, int colorNumber, List<Bolid> bolids, String name) {
@@ -396,7 +400,7 @@ public class Bolid {
         else if(isInTurn) acceleration = velocity.getNewWithCustomLength(0);
 
         if(shouldBrake){
-            acceleration = velocity.getNewWithCustomLength(-breakingValue);
+            acceleration = velocity.getNewWithCustomLength(-breakingValue*breakingForceScale);   //TODO
             addKersSystemPercent(breakingValue/3);
         }
     }

@@ -5,10 +5,10 @@
     <ignored path="F1-GLIDER.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Board.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398158153497" ignored="false" />
-    <file path="/Bolid.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1399116139295" ignored="false" />
+    <file path="/Bolid.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1399143855344" ignored="false" />
     <file path="/Dummy.txt" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1397207174820" ignored="false" />
     <file path="/GUI.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398158119310" ignored="false" />
-    <file path="/ConsoleFrame.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398939398281" ignored="false" />
+    <file path="/ConsoleFrame.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1399143602067" ignored="false" />
     <file path="/TablesRefresher.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1399113867558" ignored="false" />
     <file path="/DriverSkill.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398080984265" ignored="false" />
     <file path="/Driver.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398111479113" ignored="false" />
@@ -81,10 +81,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Board.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Board.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Board.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="263" column="23" selection-start="9937" selection-end="9937" vertical-scroll-proportion="0.0">
+            <state line="133" column="83" selection-start="5016" selection-end="5016" vertical-scroll-proportion="0.37842777">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -95,17 +95,60 @@
       <file leaf-file-name="GUI.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/GUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="277" column="65" selection-start="10266" selection-end="10266" vertical-scroll-proportion="0.0">
+            <state line="271" column="52" selection-start="9997" selection-end="9997" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Bolid.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Bolid.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Bolid.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="304" column="58" selection-start="10238" selection-end="10238" vertical-scroll-proportion="0.5959781">
+            <state line="61" column="39" selection-start="1690" selection-end="1690" vertical-scroll-proportion="0.0">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TablesRefresher.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/TablesRefresher.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="37" column="47" selection-start="1267" selection-end="1267" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConsoleFrame.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/ConsoleFrame.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="181" column="87" selection-start="7260" selection-end="7260" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#4114#4122#0" expanded="true" />
+                <element signature="e#5817#6068#0" expanded="true" />
+                <element signature="e#6057#6058#0" expanded="true" />
+                <element signature="e#6197#6461#0" expanded="true" />
+                <element signature="e#6450#6451#0" expanded="true" />
+                <element signature="e#6590#6890#0" expanded="true" />
+                <element signature="e#6879#6880#0" expanded="true" />
+                <element signature="e#7021#7284#0" expanded="true" />
+                <element signature="e#7273#7274#0" expanded="true" />
+                <element signature="e#10138#10738#0" expanded="true" />
+                <element signature="e#10727#10728#0" expanded="true" />
+                <element signature="e#11295#11549#0" expanded="true" />
+                <element signature="e#11538#11539#0" expanded="true" />
+                <element signature="e#11653#11951#0" expanded="true" />
+                <element signature="e#11940#11941#0" expanded="true" />
+                <element signature="e#12069#12373#0" expanded="true" />
+                <element signature="e#12362#12363#0" expanded="true" />
+                <element signature="e#12474#12768#0" expanded="true" />
+                <element signature="e#12757#12758#0" expanded="true" />
+                <element signature="e#12875#13175#0" expanded="true" />
+                <element signature="e#13164#13165#0" expanded="true" />
+                <element signature="e#13325#13541#0" expanded="true" />
+                <element signature="e#13530#13531#0" expanded="true" />
+                <element signature="e#14989#15006#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -135,11 +178,11 @@
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/POJOs/Car.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/POJOs/Driver.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/Enums/Team.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/Board.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/Path.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/ConsoleFrame.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/GUI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/TablesRefresher.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/Board.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/ConsoleFrame.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/Bolid.java" />
       </list>
     </option>
@@ -398,6 +441,40 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="f1race" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="F1-GLIDER" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="F1-GLIDER" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sispd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="f1race" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parsers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -760,65 +837,65 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="271" column="52" selection-start="9997" selection-end="9997" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/ConsoleFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="75" selection-start="897" selection-end="897" vertical-scroll-proportion="-6.2535715">
+        <state line="181" column="87" selection-start="7260" selection-end="7260" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#4286#4471#0" expanded="true" />
-            <element signature="e#4460#4461#0" expanded="true" />
-            <element signature="e#4509#4703#0" expanded="true" />
-            <element signature="e#4692#4693#0" expanded="true" />
-            <element signature="e#4751#5007#0" expanded="true" />
-            <element signature="e#4996#4997#0" expanded="true" />
-            <element signature="class#6695:8494" expanded="false" />
-            <element signature="method#actionPerformed#0;class#6695:8494" expanded="false" />
-            <element signature="method#defaultAccelerationTable#0;class#6695:8494" expanded="false" />
-            <element signature="e#10062#10662#0" expanded="true" />
-            <element signature="e#10651#10652#0" expanded="true" />
-            <element signature="e#11219#11473#0" expanded="true" />
-            <element signature="e#11462#11463#0" expanded="true" />
-            <element signature="e#11577#11875#0" expanded="true" />
-            <element signature="e#11864#11865#0" expanded="true" />
-            <element signature="e#11993#12297#0" expanded="true" />
-            <element signature="e#12286#12287#0" expanded="true" />
-            <element signature="e#12398#12692#0" expanded="true" />
-            <element signature="e#12681#12682#0" expanded="true" />
-            <element signature="e#12799#13099#0" expanded="true" />
-            <element signature="e#13088#13089#0" expanded="true" />
-            <element signature="e#13249#13465#0" expanded="true" />
-            <element signature="e#13454#13455#0" expanded="true" />
-            <element signature="e#14913#14930#0" expanded="true" />
+            <element signature="e#4114#4122#0" expanded="true" />
+            <element signature="e#5817#6068#0" expanded="true" />
+            <element signature="e#6057#6058#0" expanded="true" />
+            <element signature="e#6197#6461#0" expanded="true" />
+            <element signature="e#6450#6451#0" expanded="true" />
+            <element signature="e#6590#6890#0" expanded="true" />
+            <element signature="e#6879#6880#0" expanded="true" />
+            <element signature="e#7021#7284#0" expanded="true" />
+            <element signature="e#7273#7274#0" expanded="true" />
+            <element signature="e#10138#10738#0" expanded="true" />
+            <element signature="e#10727#10728#0" expanded="true" />
+            <element signature="e#11295#11549#0" expanded="true" />
+            <element signature="e#11538#11539#0" expanded="true" />
+            <element signature="e#11653#11951#0" expanded="true" />
+            <element signature="e#11940#11941#0" expanded="true" />
+            <element signature="e#12069#12373#0" expanded="true" />
+            <element signature="e#12362#12363#0" expanded="true" />
+            <element signature="e#12474#12768#0" expanded="true" />
+            <element signature="e#12757#12758#0" expanded="true" />
+            <element signature="e#12875#13175#0" expanded="true" />
+            <element signature="e#13164#13165#0" expanded="true" />
+            <element signature="e#13325#13541#0" expanded="true" />
+            <element signature="e#13530#13531#0" expanded="true" />
+            <element signature="e#14989#15006#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/TablesRefresher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="72" selection-start="1659" selection-end="1659" vertical-scroll-proportion="0.65265083">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="263" column="23" selection-start="9937" selection-end="9937" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/GUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="277" column="65" selection-start="10266" selection-end="10266" vertical-scroll-proportion="0.0">
+        <state line="37" column="47" selection-start="1267" selection-end="1267" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Bolid.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="304" column="58" selection-start="10238" selection-end="10238" vertical-scroll-proportion="0.5959781">
+        <state line="61" column="39" selection-start="1690" selection-end="1690" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="133" column="83" selection-start="5016" selection-end="5016" vertical-scroll-proportion="0.37842777">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

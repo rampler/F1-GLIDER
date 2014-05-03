@@ -70,7 +70,7 @@ public class ConsoleFrame extends JFrame {
         settings2.setBorder(BorderFactory.createLineBorder(new Color(50, 50, 50)));
 
         JPanel optionsPanel = new JPanel();
-        optionsPanel.setLayout(new GridLayout(5,2));
+        optionsPanel.setLayout(new GridLayout(6,2));
 
         //Track dryness
         String[] list = new String[2];
@@ -99,16 +99,15 @@ public class ConsoleFrame extends JFrame {
         });
 
         //Tires equipped
-//        list = new String[2];
-//        i=0;
-//        for(Tire value : Tire.values())
-//        {
-//            list[i] = value.toString();
-//            i++;
-//        }
-//        final JComboBox<String> tiresCB = new JComboBox<String>(list);
-//        tiresCB.setActionCommand("changedTires");
-        //Keep minimum speed
+        list = new String[2];
+        i=0;
+        for(Tire value : Tire.values())
+        {
+            list[i] = value.toString();
+            i++;
+        }
+        final JComboBox<String> tiresCB = new JComboBox<String>(list);
+        //tiresCB.setActionCommand("changedTires");
 
 
         //TimersDelays
@@ -135,8 +134,8 @@ public class ConsoleFrame extends JFrame {
 
         optionsPanel.add(new JLabel(" Track dryness: "));
         optionsPanel.add(drynessCB);
-//        optionsPanel.add(new JLabel(" Tires equipped: "));
-//        optionsPanel.add(tiresCB);
+        optionsPanel.add(new JLabel(" Tires equipped: "));
+        optionsPanel.add(tiresCB);
         optionsPanel.add(new JLabel(" Iteration delay(ms):"));
         optionsPanel.add(itDelay);
         optionsPanel.add(new JLabel(" Results refreshing(ms):"));
@@ -149,19 +148,40 @@ public class ConsoleFrame extends JFrame {
 
         //Accelerations
         JPanel accPanel = new JPanel();
-        accPanel.setLayout(new GridLayout(5,5));
+        accPanel.setLayout(new GridLayout(4,4));
 
-        final JSpinner g100 = new JSpinner(new SpinnerNumberModel(16.50, 0.00, 100.00, 0.01));
-        final JSpinner g200 = new JSpinner(new SpinnerNumberModel(14.70, 0.00, 100.00, 0.01));
-        final JSpinner g300 = new JSpinner(new SpinnerNumberModel(9.76, 0.00, 100.00, 0.01));
-
-        final JSpinner b100 = new JSpinner(new SpinnerNumberModel(-24.00, -100.00, 0.00, 0.01));
-        final JSpinner b200 = new JSpinner(new SpinnerNumberModel(-21.00, -100.00, 0.00, 0.01));
-        final JSpinner b300 = new JSpinner(new SpinnerNumberModel(-17.30, -100.00, 0.00, 0.01));
-
-        final JSpinner n100 = new JSpinner(new SpinnerNumberModel(-2.00, -100.00, 0.00, 0.01));
-        final JSpinner n200 = new JSpinner(new SpinnerNumberModel(-2.30, -100.00, 0.00, 0.01));
-        final JSpinner n300 = new JSpinner(new SpinnerNumberModel(-2.70, -100.00, 0.00, 0.01));
+        final JSpinner g100 = new JSpinner(new SpinnerNumberModel(0.00, 0.00, 100.00, 0.01));
+        g100.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                for(Bolid bolid : board.getBolids())
+                    bolid.setMinimumAcceleration((double) g100.getValue());
+            }
+        });
+        final JSpinner g200 = new JSpinner(new SpinnerNumberModel(12.54, 0.00, 100.00, 0.01));
+        g200.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                for(Bolid bolid : board.getBolids())
+                    bolid.setMaxForceAcceleration((double) g200.getValue() / 25 / 2.28);
+            }
+        });
+        final JSpinner b100 = new JSpinner(new SpinnerNumberModel(0.00, -100.00, 0.00, 0.01));
+        b100.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                for(Bolid bolid : board.getBolids())
+                    bolid.setMaxForceAcceleration(bolid.getMaxForceAcceleration() - ((double) b100.getValue() / 25 / 2.28));
+            }
+        });
+        final JSpinner b200 = new JSpinner(new SpinnerNumberModel(-28.27, -100.00, 0.00, 0.01));
+        b200.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                for(Bolid bolid : board.getBolids())
+                    bolid.setBreakingForceScale(-(double)b200.getValue()/25/2.28/0.49);
+            }
+        });
 
         JButton restore = new JButton("Default");
         restore.addActionListener(new ActionListener() {
@@ -170,7 +190,7 @@ public class ConsoleFrame extends JFrame {
                 itDelay.setValue(40);
                 refDelay.setValue(300);
                 simSpeed.setValue(2);
-                //tiresCB.setSelectedIndex(0);
+                tiresCB.setSelectedIndex(0);
                 drynessCB.setSelectedIndex(0);
                 keepMinimumSpinner.setValue(63);
 
@@ -178,13 +198,8 @@ public class ConsoleFrame extends JFrame {
                 double[][] table = defaultAccelerationTable();
                 g100.setValue(table[0][0]);
                 g200.setValue(table[0][1]);
-                g300.setValue(table[0][2]);
                 b100.setValue(table[1][0]);
                 b200.setValue(table[1][1]);
-                b300.setValue(table[1][2]);
-                n100.setValue(table[2][0]);
-                n200.setValue(table[2][1]);
-                n300.setValue(table[2][2]);
             }
 
             /**
@@ -194,9 +209,8 @@ public class ConsoleFrame extends JFrame {
              * In last - without gas or break
              * @return - default acceleration table
              */
-            private double[][] defaultAccelerationTable()
-            {
-                double [][] table = new double[3][3];
+            private double[][] defaultAccelerationTable() {
+                double[][] table = new double[3][3];
                 //gas
                 table[0][0] = 16.5; //0-100
                 table[0][1] = 14.7; //100-200
@@ -215,30 +229,20 @@ public class ConsoleFrame extends JFrame {
 
         accPanel.add(new JLabel(""));
         accPanel.add(new JLabel(""));
-        accPanel.add(new JLabel("0-100 km/h:"));
-        accPanel.add(new JLabel("100-200 km/h:"));
-        accPanel.add(new JLabel("200-300 km/h:"));
+        accPanel.add(new JLabel("Min:"));
+        accPanel.add(new JLabel("Max:"));
 
         accPanel.add(new JLabel(""));
         accPanel.add(new JLabel("Gas"));
         accPanel.add(g100);
         accPanel.add(g200);
-        accPanel.add(g300);
 
         accPanel.add(new JLabel(""));
         accPanel.add(new JLabel("Break"));
         accPanel.add(b100);
         accPanel.add(b200);
-        accPanel.add(b300);
-
-        accPanel.add(new JLabel(""));
-        accPanel.add(new JLabel("None"));
-        accPanel.add(n100);
-        accPanel.add(n200);
-        accPanel.add(n300);
 
         accPanel.add(restore);
-        accPanel.add(new JLabel(""));
         accPanel.add(new JLabel(""));
         accPanel.add(new JLabel(""));
         accPanel.add(new JLabel(""));
@@ -257,7 +261,6 @@ public class ConsoleFrame extends JFrame {
         simSpeed.setValue(2);
         simSpeed.setPaintLabels(true);
         simSpeed.setSnapToTicks(true);
-        //simSpeed.addChangeListener(this);
         simSpeed.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
