@@ -1,11 +1,11 @@
-10
+6
 Vettel;PRO;Red_Bull;
-Ricciardo;PRO;Red_Bull;
 Alonso;EXPERT;Ferrari;
-Massa;NOVICE;Williams;
 Button;INTERMEDIATE;McLaren;
 Perez;ROOKIE;Force_India;
 Raikkonen;NOVICE;Ferrari;
+Ricciardo;PRO;Red_Bull;
+Massa;NOVICE;Williams;
 Bottas;INTERMEDIATE;Williams;
 Rosberg;MASTER;Mercedes;
 Hamilton;MASTER;Mercedes;

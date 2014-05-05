@@ -444,7 +444,7 @@ public class ConsoleFrame extends JFrame {
         boolean finish = true;
         if (!board.getBolids().isEmpty()) {
             for(Bolid bolid : board.getBolids()) {
-               if (bolid.getLaps() < 3) {
+               if (bolid.getLaps() < 2) {
                    finish = false;
                }
             }

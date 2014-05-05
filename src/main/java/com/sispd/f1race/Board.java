@@ -247,7 +247,6 @@ public class Board extends JPanel implements ActionListener{
         		collisionString+=" "+bolid.getBolidNumber()+". "+bolid.getName();
                 x = bolid.getLocation().getX()*scale;
                 y = bolid.getLocation().getY()*scale;
-                bolids.remove(bolid);
             }
 
             //Zbliżenie na kolizję
@@ -255,8 +254,11 @@ public class Board extends JPanel implements ActionListener{
             if(autoscroll) { autoscroll = false; wasAutoscroll=true; }
             parent.getHorizontalScrollBar().setValue((int)(((x/getWidth())*parent.getHorizontalScrollBar().getMaximum())-(parent.getHorizontalScrollBar().getMaximum()/zoom)/2));
             parent.getVerticalScrollBar().setValue((int)(((y/getHeight())*parent.getVerticalScrollBar().getMaximum())-(parent.getVerticalScrollBar().getMaximum()/zoom)/2));
-        	JOptionPane.showMessageDialog(this.getParent(), "Collision on track:"+collisionString+"!");
+            JOptionPane.showMessageDialog(this.getParent(), "Collision on track:"+collisionString+"!");
             if(wasAutoscroll) autoscroll = true;
+
+            for(Bolid bolid : bolidsToRemove)
+                bolids.remove(bolid);
         }
 
         for(Bolid bolid : bolids) {

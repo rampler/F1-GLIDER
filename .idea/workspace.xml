@@ -4,7 +4,7 @@
     <list default="true" id="7c949640-4e40-4df9-90ca-568b271f4c20" name="Default" comment="" />
     <ignored path="F1-GLIDER.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Board.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398158153497" ignored="false" />
+    <file path="/Board.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1399311962834" ignored="false" />
     <file path="/Bolid.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1399143855344" ignored="false" />
     <file path="/Dummy.txt" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1397207174820" ignored="false" />
     <file path="/GUI.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398158119310" ignored="false" />
@@ -13,7 +13,7 @@
     <file path="/DriverSkill.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398080984265" ignored="false" />
     <file path="/Driver.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398111479113" ignored="false" />
     <file path="/Team.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398111521601" ignored="false" />
-    <file path="/drivers.txt" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398080570415" ignored="false" />
+    <file path="/drivers.txt" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1399311548560" ignored="false" />
     <file path="/Car.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398110945486" ignored="false" />
     <file path="/Path.java" changelist="7c949640-4e40-4df9-90ca-568b271f4c20" time="1398463013489" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -81,10 +81,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Board.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Board.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Board.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="149" column="64" selection-start="5579" selection-end="5579" vertical-scroll-proportion="0.0">
+            <state line="248" column="53" selection-start="9127" selection-end="9127" vertical-scroll-proportion="0.4570384">
               <folding />
             </state>
           </provider>
@@ -102,7 +102,7 @@
       <file leaf-file-name="Bolid.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Bolid.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="62" column="39" selection-start="1706" selection-end="1706" vertical-scroll-proportion="0.0">
+            <state line="174" column="190" selection-start="4429" selection-end="4429" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -117,10 +117,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConsoleFrame.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ConsoleFrame.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/ConsoleFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="224" column="45" selection-start="8768" selection-end="8768" vertical-scroll-proportion="0.15178572">
+            <state line="438" column="64" selection-start="16315" selection-end="16315" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="drivers.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/drivers.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="34" selection-start="254" selection-end="254" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -147,16 +156,16 @@
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/parsers/PathParser.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/POJOs/Team.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/Enums/DriverSkill.java" />
-        <option value="$PROJECT_DIR$/drivers.txt" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/POJOs/Car.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/POJOs/Driver.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/Enums/Team.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/Path.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/GUI.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/TablesRefresher.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/Board.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/Bolid.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/ConsoleFrame.java" />
+        <option value="$PROJECT_DIR$/drivers.txt" />
+        <option value="$PROJECT_DIR$/src/main/java/com/sispd/f1race/Board.java" />
       </list>
     </option>
   </component>
@@ -214,6 +223,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -452,8 +463,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -667,7 +676,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23863636" sideWeight="0.67064846" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23863636" sideWeight="0.67064846" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.26279864" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="23" y="287" width="1320" height="154" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -741,11 +750,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/PVector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="21" selection-start="197" selection-end="198" vertical-scroll-proportion="0.17570093" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/parsers/PathParser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="13" selection-start="272" selection-end="272" vertical-scroll-proportion="0.12261581" />
@@ -763,7 +767,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/Enums/DriverSkill.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="31" selection-start="333" selection-end="333" vertical-scroll-proportion="0.39464286" />
+        <state line="13" column="31" selection-start="333" selection-end="333" vertical-scroll-proportion="0.39464286">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.7.0_45/src.zip!/java/util/ArrayList.java">
@@ -771,48 +777,32 @@
         <state line="399" column="0" selection-start="14649" selection-end="14649" vertical-scroll-proportion="0.33214286" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/drivers.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="2" selection-start="2" selection-end="2" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/POJOs/Car.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="46" selection-start="1992" selection-end="1992" vertical-scroll-proportion="0.7589286" />
+        <state line="66" column="46" selection-start="1992" selection-end="1992" vertical-scroll-proportion="0.7589286">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/POJOs/Driver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="27" selection-start="150" selection-end="150" vertical-scroll-proportion="0.18214285" />
+        <state line="6" column="27" selection-start="150" selection-end="150" vertical-scroll-proportion="0.18214285">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/Enums/Team.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="14" selection-start="53" selection-end="53" vertical-scroll-proportion="0.09107143" />
+        <state line="3" column="14" selection-start="53" selection-end="53" vertical-scroll-proportion="0.09107143">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Path.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="58" selection-start="3077" selection-end="3077" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/GUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="271" column="52" selection-start="9997" selection-end="9997" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Bolid.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="39" selection-start="1706" selection-end="1706" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="149" column="64" selection-start="5579" selection-end="5579" vertical-scroll-proportion="0.0">
+        <state line="89" column="58" selection-start="3077" selection-end="3077" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -824,9 +814,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/ChartGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="73" selection-start="652" selection-end="652" vertical-scroll-proportion="0.45535713">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/drivers.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="34" selection-start="254" selection-end="254" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/ConsoleFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="224" column="45" selection-start="8768" selection-end="8768" vertical-scroll-proportion="0.15178572">
+        <state line="438" column="64" selection-start="16315" selection-end="16315" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1racing/GUI/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="271" column="52" selection-start="9997" selection-end="9997" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Bolid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="174" column="190" selection-start="4429" selection-end="4429" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/sispd/f1race/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="248" column="53" selection-start="9127" selection-end="9127" vertical-scroll-proportion="0.4570384">
           <folding />
         </state>
       </provider>
