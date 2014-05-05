@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -29,7 +30,7 @@ public class Bolid {
     private PVector acceleration;
     private PVector turnForce;
     private PVector overtakeVector;
-    
+
     private Bolid bolidToFollow;
     private Bolid bolidToOvertake;
     private Bolid bolidOnSide;
@@ -43,9 +44,9 @@ public class Bolid {
     private int bolidSize;
     private int bolidNumber;
     private int kersIterations = 0;
-    
+
     private long actualLapTime;
-	private long bestLapTime;
+    private long bestLapTime;
 
     private double minimumSpeed = 7;
     private double maxSpeed;
@@ -55,10 +56,10 @@ public class Bolid {
     private double oldMaxForceAcceleration;
     private double oldSteerForceMultiplier;
     private double kersSystemPercent;
-    private double breakingForceScale=1;
+    private double breakingForceScale = 1;
 
     private Path path;
-    
+
     private List<Bolid> bolids;
     private String name;
     private BufferedImage bufferedImage;
@@ -72,51 +73,118 @@ public class Bolid {
     private boolean turnForceMode = false;
     private boolean steerForceMode = false;
     private boolean targetMode = false;
-    
+
     private Driver driver;
 
-    
+
     //Getters
-    public PVector  getVelocity(){ return velocity; }
-    public PVector  getAcceleration(){ return acceleration; }
-    public PVector  getTurnForce(){ return turnForce; }
-    public PVector  getLocation(){ return location; }
-    public int      getBolidNumber(){ return bolidNumber; }
-    public int      getLaps(){ return laps; }
-    public long     getActualLapTime(){ return actualLapTime; }
-    public long     getBestLapTime(){ return bestLapTime; }
-    public double   getMaxSpeed(){ return maxSpeed; }
-    public double   getMaxForceAcceleration(){ return maxForceAcceleration; }
-    public int      getKersSystemPercent(){ return (int) kersSystemPercent; }
-    public String   getName(){ return name; }
-    public boolean  isCrashed(){ return crashed; }
-    public Driver   getDriver(){ return driver; }
-    
+    public PVector getVelocity() {
+        return velocity;
+    }
+
+    public PVector getAcceleration() {
+        return acceleration;
+    }
+
+    public PVector getTurnForce() {
+        return turnForce;
+    }
+
+    public PVector getLocation() {
+        return location;
+    }
+
+    public int getBolidNumber() {
+        return bolidNumber;
+    }
+
+    public int getLaps() {
+        return laps;
+    }
+
+    public long getActualLapTime() {
+        return actualLapTime;
+    }
+
+    public long getBestLapTime() {
+        return bestLapTime;
+    }
+
+    public double getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public double getMaxForceAcceleration() {
+        return maxForceAcceleration;
+    }
+
+    public int getKersSystemPercent() {
+        return (int) kersSystemPercent;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isCrashed() {
+        return crashed;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
     //Setters
-    public void setRain(boolean isRain){ this.isRain = isRain; }
-    public void setVelocityMode(boolean velocityMode){ this.velocityMode = velocityMode; }
-    public void setSteerForceMode(boolean steerForceMode){ this.steerForceMode = steerForceMode; }
-    public void setTargetMode(boolean targetMode){ this.targetMode = targetMode; }
-    public void setOvertakingMode(boolean overtakingMode){ this.overtakingMode = overtakingMode; }
-    public void setMinimumSpeed(double minimumSpeed){ this.minimumSpeed = minimumSpeed; }
-    public void setBreakingForceScale(double breakingForceScale){ this.breakingForceScale = breakingForceScale; }
-    public void setMaxForceAcceleration(double maxForceAcceleration){ this.maxForceAcceleration = maxForceAcceleration; }
-    public void setMinimumAcceleration(double minimumAcceleration){ acceleration.add(new PVector(minimumAcceleration, minimumAcceleration)); }    //TODO test
+    public void setRain(boolean isRain) {
+        this.isRain = isRain;
+    }
+
+    public void setVelocityMode(boolean velocityMode) {
+        this.velocityMode = velocityMode;
+    }
+
+    public void setSteerForceMode(boolean steerForceMode) {
+        this.steerForceMode = steerForceMode;
+    }
+
+    public void setTargetMode(boolean targetMode) {
+        this.targetMode = targetMode;
+    }
+
+    public void setOvertakingMode(boolean overtakingMode) {
+        this.overtakingMode = overtakingMode;
+    }
+
+    public void setMinimumSpeed(double minimumSpeed) {
+        this.minimumSpeed = minimumSpeed;
+    }
+
+    public void setBreakingForceScale(double breakingForceScale) {
+        this.breakingForceScale = breakingForceScale;
+    }
+
+    public void setMaxForceAcceleration(double maxForceAcceleration) {
+        this.maxForceAcceleration = maxForceAcceleration;
+    }
+
+    public void setMinimumAcceleration(double minimumAcceleration) {
+        acceleration.add(new PVector(minimumAcceleration, minimumAcceleration));
+    }    //TODO test
 
     //Constructor
     public Bolid(Path path, int bolidSize, int bolidNumber, Driver driver, double maxSpeed, double maxForceAcceleration, double steerForceMultiplier, double stopAccelerationInTurnLevel, int colorNumber, List<Bolid> bolids, String name) {
         this.path = path;
 
-        double x = path.get(100*(11-bolidNumber)).getX();
-        double y = path.get(100*(11-bolidNumber)).getY();
+        double x = path.get(100 * (11 - bolidNumber)).getX();
+        double y = path.get(100 * (11 - bolidNumber)).getY();
 
-        startDelay += (bolidNumber+1)*4;
+        startDelay += (bolidNumber + 1) * 4;
 
-        location = new PVector(x,y);
-        velocity = new PVector(-0.001,0);
-        acceleration = new PVector(0,0);
-        turnForce = new PVector(0,0);
-        steerForce = new PVector(0,0);
+        location = new PVector(x, y);
+        velocity = new PVector(-0.001, 0);
+        acceleration = new PVector(0, 0);
+        turnForce = new PVector(0, 0);
+        steerForce = new PVector(0, 0);
         this.bolidSize = bolidSize;  // 3
         this.bolidNumber = bolidNumber;
         this.driver = driver;
@@ -129,28 +197,28 @@ public class Bolid {
         this.color = colorNumber;
         this.bolids = bolids;
         this.name = name;
-        
+
         this.actualLapTime = 0;
         this.bestLapTime = 1000000;
     }
 
     public boolean isOcuppied(PVector point) {
-        if(point==null)
+        if (point == null)
             return false;
 
         Polygon polygon = createPolygon(1);
-        if(polygon.contains(point.getX(), point.getY()))
+        if (polygon.contains(point.getX(), point.getY()))
             return true;
 
         return false;
     }
 
     public boolean isCrash(Polygon point) {
-        if(point==null)
+        if (point == null)
             return false;
 
         Polygon polygon = createPolygon(1);
-        if(polygon.intersects(point.getBounds2D()))
+        if (polygon.intersects(point.getBounds2D()))
             return true;
 
         return false;
@@ -161,7 +229,7 @@ public class Bolid {
         PVector predictedDirection = predictBolidDirection(viewDistance);
         PVector target = findTargetPoint(path, predictedDirection);
 
-        if(target!=null) {
+        if (target != null) {
             seek(target);
         }
     }
@@ -176,8 +244,8 @@ public class Bolid {
         int from = 0;
         int to = path.size();
 
-        if(target != null) {
-            from = Math.max(lastPointOnPathVisited-50, 0);
+        if (target != null) {
+            from = Math.max(lastPointOnPathVisited - 50, 0);
             to = (lastPointOnPathVisited + 500);
         }
 
@@ -185,10 +253,10 @@ public class Bolid {
 
         double shortestDistance = 1000000;
 
-        for (int i = from; i<to; i++) {
+        for (int i = from; i < to; i++) {
             int firstPointNumber = (i) % path.size();
-            int secondPointNumber = (i+10) % path.size();
-            int thirdPointNumber = (i+20) % path.size();
+            int secondPointNumber = (i + 10) % path.size();
+            int thirdPointNumber = (i + 20) % path.size();
 
             PVector a = path.get(firstPointNumber);
             PVector b = path.get(secondPointNumber);
@@ -196,7 +264,7 @@ public class Bolid {
             PVector normalPoint = calculateNormalPoint(predictedDirection, a, b);
             PVector direction = PVector.substract(b, a);
 
-            if (isNormalPointOnPath(a, b, normalPoint))   {
+            if (isNormalPointOnPath(a, b, normalPoint)) {
                 normalPoint = b.getCopy();
                 a = path.get(secondPointNumber);
                 b = path.get(thirdPointNumber);
@@ -218,9 +286,9 @@ public class Bolid {
                 lastPointOnPathVisited = secondPointNumber;
                 if (lastlastPointOnPathVisited > lastPointOnPathVisited + 50) {
                     laps++;
-                    
-                    if(actualLapTime < bestLapTime && laps != 0) bestLapTime = actualLapTime;
-            		actualLapTime = 0;
+
+                    if (actualLapTime < bestLapTime && laps != 0) bestLapTime = actualLapTime;
+                    actualLapTime = 0;
                 }
                 lastlastPointOnPathVisited = lastPointOnPathVisited;
             }
@@ -230,7 +298,7 @@ public class Bolid {
     }
 
     private boolean isNormalPointOnPath(PVector a, PVector b, PVector normalPoint) {
-        return  normalPoint.getX() < Math.min(a.getX(), b.getX()) ||
+        return normalPoint.getX() < Math.min(a.getX(), b.getX()) ||
                 normalPoint.getX() > Math.max(a.getX(), b.getX()) ||
                 normalPoint.getY() < Math.min(a.getY(), b.getY()) ||
                 normalPoint.getY() > Math.max(a.getY(), b.getY());
@@ -246,33 +314,36 @@ public class Bolid {
         return PVector.add(startPoint, ab);
     }
 
+    long overtakeStartTime;
+
     void seek(PVector target) {
         bolidToFollow = shouldFollowCar();
         bolidOnSide = lookLeftRight();
 
-        if(bolidToFollow!=null && bolidToFollow!=bolidToOvertake || velocity.magnitude()<15) {
+        if (bolidToFollow != null && bolidToFollow != bolidToOvertake || velocity.magnitude() < 15) {
             overtakingMode = false;
         }
 
-        if(bolidToFollow!=null && bolidToFollow.overtakingMode) {
+        if (bolidToFollow != null && bolidToFollow.overtakingMode) {
             velocity.limit(bolidToFollow.velocity.magnitude());
         }
 
-        if(!overtakingMode && bolidToFollow!=null && bolidOnSide==null) {
+        if (!overtakingMode && bolidToFollow != null && bolidOnSide == null && new Date().getTime() - overtakeStartTime > 600) {
             bolidToOvertake = bolidToFollow;
             overtakingMode = true;
+            overtakeStartTime = new Date().getTime();
         }
 
-        if(!overtakingMode && bolidOnSide!=null) {
-            double velocityBolidOnSide = bolidOnSide.velocity.magnitude()*0.8;
+        if (!overtakingMode && bolidOnSide != null) {
+            double velocityBolidOnSide = bolidOnSide.velocity.magnitude() * 0.8;
             velocity.limit(velocityBolidOnSide);
         }
 
-        if(overtakingMode && !isOvertakeDone()) {
-            if(overtakeVector==null)
+        if (overtakingMode && !isOvertakeDone()) {
+            if (overtakeVector == null)
                 overtakeVector = turnForce.getNewWithCustomLength(26);
 
-            if(overtakeVector.heading() - turnForce.heading() < 1.4 && overtakeVector.heading() - turnForce.heading() > -1.4)
+            if (overtakeVector.heading() - turnForce.heading() < 1.4 && overtakeVector.heading() - turnForce.heading() > -1.4)
                 overtakeVector = turnForce.getNewWithCustomLength(26);
 
             target.add(overtakeVector);
@@ -293,7 +364,7 @@ public class Bolid {
         velocity.add(steerForce);
         velocity.limit(maxSpeed);
 
-        if(step<startDelay) {
+        if (step < startDelay) {
             velocity.multiply(0);
         }
     }
@@ -306,26 +377,26 @@ public class Bolid {
 
         caclucateAcceleration();
 
-        if(kersIterations > 0) acceleration.multiply(1.1);
+        if (kersIterations > 0) acceleration.multiply(1.1);
         steerForce = PVector.add(turnForce, acceleration);
 
     }
 
     private void keepMinimumSpeed(double minimumSpeed) {
-        if(step<startDelay+25) {
+        if (step < startDelay + 25) {
             startPhase = false;
         }
 
-        if(!startPhase && velocity.magnitude()<minimumSpeed) {
-            velocity = velocity.getNewWithCustomLength(minimumSpeed+Math.random());
+        if (!startPhase && velocity.magnitude() < minimumSpeed) {
+            velocity = velocity.getNewWithCustomLength(minimumSpeed + Math.random());
         }
     }
 
     private void checkIfCrash() {
         Polygon myPolygon = createPolygonWithNoMove(0.1);
 
-        for(Bolid bolid : bolids) {
-            if(bolid!=this && bolid.isCrash(myPolygon)) {
+        for (Bolid bolid : bolids) {
+            if (bolid != this && bolid.isCrash(myPolygon)) {
                 crashed = true;
                 bolid.crashed = true;
             }
@@ -337,8 +408,8 @@ public class Bolid {
         PVector moveVector = velocity.getNewWithCustomLength(25);
         myPolygon.translate((int) (moveVector.getX()), (int) (moveVector.getY()));
 
-        for(Bolid bolid : bolids) {
-            if(bolid!=this && bolid.isCrash(myPolygon)) {
+        for (Bolid bolid : bolids) {
+            if (bolid != this && bolid.isCrash(myPolygon)) {
                 return bolid;
             }
         }
@@ -347,19 +418,19 @@ public class Bolid {
     }
 
     private boolean isOvertakeDone() {
-        if(overtakeVector==null) return false;
+        if (overtakeVector == null) return false;
 
         Polygon myPolygon = createPolygonWithNoMove(3);
         PVector sideVector = overtakeVector.getNewWithCustomLength(-25);
 
         myPolygon.translate((int) (sideVector.getX()), (int) (sideVector.getY()));
 
-        if(bolidToOvertake != null && !bolidToOvertake.isCrash(myPolygon)) return true;
+        if (bolidToOvertake != null && !bolidToOvertake.isCrash(myPolygon)) return true;
         return false;
     }
 
     private Bolid lookLeftRight() {
-        if(turnForce==null)
+        if (turnForce == null)
             return null;
 
         Polygon lookLeft = createPolygonWithNoMove(1);
@@ -372,11 +443,11 @@ public class Bolid {
         lookLeft.translate((int) (left.getX()), (int) (left.getY()));
         lookRight.translate((int) (right.getX()), (int) (right.getY()));
 
-        for(Bolid bolid : bolids) {
-            if(bolid!=this && bolid.isCrash(lookLeft))
+        for (Bolid bolid : bolids) {
+            if (bolid != this && bolid.isCrash(lookLeft))
                 return bolid;
 
-            if(bolid!=this && bolid.isCrash(lookRight))
+            if (bolid != this && bolid.isCrash(lookRight))
                 return bolid;
         }
 
@@ -387,30 +458,31 @@ public class Bolid {
         double breakingValue = path.get(lastPointOnPathVisited).getBreakingValue();
         double speed = velocity.magnitude();
 
-        boolean shouldBrake = breakingValue>0;
+        boolean shouldBrake = breakingValue > 0;
 
-        boolean isInTurn = turnForce.magnitude()>stopAccelerationInTurnLevel;
-        boolean isOver200kmph = speed>21;
+        boolean isInTurn = turnForce.magnitude() > stopAccelerationInTurnLevel;
+        boolean isOver200kmph = speed > 21;
 
-        if(!shouldBrake && !isInTurn && isOver200kmph) {
+        if (!shouldBrake && !isInTurn && isOver200kmph) {
             double accelerationOver200kmph = calculateAccelerationOver200kmph(speed);
             acceleration = velocity.getNewWithCustomLength(accelerationOver200kmph);
-        }
-        else if(!shouldBrake && !isInTurn && !isOver200kmph) acceleration = velocity.getNewWithCustomLength(maxForceAcceleration);
-        else if(isInTurn) acceleration = velocity.getNewWithCustomLength(0);
+        } else if (!shouldBrake && !isInTurn && !isOver200kmph)
+            acceleration = velocity.getNewWithCustomLength(maxForceAcceleration);
+        else if (isInTurn) acceleration = velocity.getNewWithCustomLength(0);
 
-        if(shouldBrake){
-            acceleration = velocity.getNewWithCustomLength(-breakingValue*breakingForceScale);   //TODO
-            addKersSystemPercent(breakingValue/3);
+        if (shouldBrake) {
+            acceleration = velocity.getNewWithCustomLength(-breakingValue * breakingForceScale);   //TODO
+            addKersSystemPercent(breakingValue / 3);
         }
     }
 
     /**
      * Add percent to KERS Progress
+     *
      * @param percent
      */
-    public void addKersSystemPercent(double percent){
-        if(kersSystemPercent+percent < 100 && percent >= 0) kersSystemPercent += percent;
+    public void addKersSystemPercent(double percent) {
+        if (kersSystemPercent + percent < 100 && percent >= 0) kersSystemPercent += percent;
         else kersSystemPercent = 100;
     }
 
@@ -418,31 +490,34 @@ public class Bolid {
      * Activate KERS for 6,7s
      * KERS Percent Progress change from 100% to 0%
      */
-    public void activateKers(int timerDelay){ kersIterations = 6700/timerDelay; kersSystemPercent = 0; }
+    public void activateKers(int timerDelay) {
+        kersIterations = 6700 / timerDelay;
+        kersSystemPercent = 0;
+    }
 
     private double calculateAccelerationOver200kmph(double x) {
         return 7.59532
-        - 1.97603*x
-        + 0.204439*Math.pow(x, 2)
-        - 0.0105423*Math.pow(x, 3)
-        + 0.000287946*Math.pow(x, 4)
-        - 3.99166961958746 * Math.pow(10, -6) *Math.pow(x, 5)
-        + 2.213567806471638 * Math.pow(10, -8) *Math.pow(x, 6);
+                - 1.97603 * x
+                + 0.204439 * Math.pow(x, 2)
+                - 0.0105423 * Math.pow(x, 3)
+                + 0.000287946 * Math.pow(x, 4)
+                - 3.99166961958746 * Math.pow(10, -6) * Math.pow(x, 5)
+                + 2.213567806471638 * Math.pow(10, -8) * Math.pow(x, 6);
     }
-    
+
     public void update(int timerDelay) {
 
-        if(isRain && !weatherChanged) {
+        if (isRain && !weatherChanged) {
             oldMaxForceAcceleration = maxForceAcceleration;
             oldSteerForceMultiplier = steerForceMultiplier;
 
-            maxForceAcceleration*=0.7;
-            steerForceMultiplier*=0.3;
+            maxForceAcceleration *= 0.7;
+            steerForceMultiplier *= 0.3;
 
             weatherChanged = true;
         }
 
-        if(!isRain && weatherChanged) {
+        if (!isRain && weatherChanged) {
             maxForceAcceleration = oldMaxForceAcceleration;
             steerForceMultiplier = oldSteerForceMultiplier;
 
@@ -450,21 +525,22 @@ public class Bolid {
         }
 
         //Aktywacja KERS
-        if(kersSystemPercent == 100 && target != null && Math.sqrt((target.getX()-location.getX())*(target.getX()-location.getX())+(target.getY()-location.getY())*(target.getY()-location.getY())) > 120) activateKers(timerDelay);
+        if (kersSystemPercent == 100 && target != null && Math.sqrt((target.getX() - location.getX()) * (target.getX() - location.getX()) + (target.getY() - location.getY()) * (target.getY() - location.getY())) > 120)
+            activateKers(timerDelay);
 
         location.add(velocity);
         steerForce.multiply(0);
 
         step++;
-        if(kersIterations > 0) kersIterations--;
-        actualLapTime+=timerDelay;
+        if (kersIterations > 0) kersIterations--;
+        actualLapTime += timerDelay;
     }
 
     private Polygon createPolygon(double scale) {
-        Point2D firstPoint = new Point.Double(-24*scale, -9*scale);
-        Point2D secondPoint = new Point.Double(24*scale, -9*scale);
-        Point2D thirdPoint = new Point.Double(24*scale, 9*scale);
-        Point2D fourthPoint = new Point.Double(-24*scale, 9*scale);
+        Point2D firstPoint = new Point.Double(-24 * scale, -9 * scale);
+        Point2D secondPoint = new Point.Double(24 * scale, -9 * scale);
+        Point2D thirdPoint = new Point.Double(24 * scale, 9 * scale);
+        Point2D fourthPoint = new Point.Double(-24 * scale, 9 * scale);
 
         double theta = velocity.heading();
 
@@ -488,10 +564,10 @@ public class Bolid {
     }
 
     private Polygon createPolygonWithNoMove(double scale) {
-        Point2D firstPoint = new Point.Double(-24*scale, -9*scale);
-        Point2D secondPoint = new Point.Double(24*scale, -9*scale);
-        Point2D thirdPoint = new Point.Double(24*scale, 9*scale);
-        Point2D fourthPoint = new Point.Double(-24*scale, 9*scale);
+        Point2D firstPoint = new Point.Double(-24 * scale, -9 * scale);
+        Point2D secondPoint = new Point.Double(24 * scale, -9 * scale);
+        Point2D thirdPoint = new Point.Double(24 * scale, 9 * scale);
+        Point2D fourthPoint = new Point.Double(-24 * scale, 9 * scale);
 
         double theta = velocity.heading();
 
@@ -516,7 +592,8 @@ public class Bolid {
 
     /**
      * Display bolid on board
-     * @param g - graphics
+     *
+     * @param g     - graphics
      * @param scale - actual scale
      * @throws IOException
      */
@@ -527,7 +604,7 @@ public class Bolid {
         g.setColor(Color.BLACK);
 
         if (overtakingMode) {
-            if(overtakeVector!=null) {
+            if (overtakeVector != null) {
                 g.setColor(Color.ORANGE);
                 g.drawLine(locationX, locationY, (int) (locationX + overtakeVector.getX()), (int) (locationY + overtakeVector.getY()));
             }
@@ -538,7 +615,7 @@ public class Bolid {
         }
 
         if (turnForceMode) {
-            if(turnForce!=null) {
+            if (turnForce != null) {
                 g.setColor(Color.ORANGE);
                 g.drawLine(locationX, locationY, (int) (locationX + turnForce.getX() * 30), (int) (locationY + turnForce.getY() * 30));
             }
@@ -550,27 +627,26 @@ public class Bolid {
         }
 
         if (targetMode) {
-            if(target!=null) {
+            if (target != null) {
                 g.setColor(Color.YELLOW);
                 //((Graphics2D) g).setTransform(customTransform);
                 g.drawOval((int) (target.getX() * scale - 3), (int) (target.getY() * scale - 3), 6, 6);
             }
         }
 
-        if(bufferedImage == null)
-        {
-            URL pathSerialized = getClass().getResource("/bolid"+ color +".png");
+        if (bufferedImage == null) {
+            URL pathSerialized = getClass().getResource("/bolid" + color + ".png");
             bufferedImage = ImageIO.read(new File(pathSerialized.getFile()));
         }
-        double theta = velocity.heading() + Math.PI/2;
+        double theta = velocity.heading() + Math.PI / 2;
 
         Point2D movePoint = new Point.Double(-1.5, -4);
         rotatePoint(theta, movePoint);
 
         AffineTransform at = new AffineTransform();
-        at.translate(locationX+ movePoint.getX(), locationY+movePoint.getY());
-        at.scale(scale/4, scale/4);
-        at.rotate(theta, 60*scale/4, 145*scale/4);
+        at.translate(locationX + movePoint.getX(), locationY + movePoint.getY());
+        at.scale(scale / 4, scale / 4);
+        at.rotate(theta, 60 * scale / 4, 145 * scale / 4);
 
         ((Graphics2D) g).drawImage(bufferedImage, at, null);
     }
@@ -580,5 +656,7 @@ public class Bolid {
     }
 
     @Override
-    public String toString() { return name; }
+    public String toString() {
+        return name;
+    }
 }
