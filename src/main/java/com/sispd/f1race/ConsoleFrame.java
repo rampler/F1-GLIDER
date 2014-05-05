@@ -210,19 +210,13 @@ public class ConsoleFrame extends JFrame {
              * @return - default acceleration table
              */
             private double[][] defaultAccelerationTable() {
-                double[][] table = new double[3][3];
+                double[][] table = new double[2][2];
                 //gas
-                table[0][0] = 16.5; //0-100
-                table[0][1] = 14.7; //100-200
-                table[0][2] = 9.76; //200-300
+                table[0][0] = 0; //0-100
+                table[0][1] = 12.54; //100-200
                 //break
-                table[1][0] = -24; //0-100
-                table[1][1] = -21; //100-200
-                table[1][2] = -17.3; //200-300
-                //none
-                table[2][0] = -2; //0-100
-                table[2][1] = -2.3; //100-200
-                table[2][2] = -2.7; //200-300
+                table[1][0] = 0; //0-100
+                table[1][1] = -28.27; //100-200
                 return table;
             }
         });
